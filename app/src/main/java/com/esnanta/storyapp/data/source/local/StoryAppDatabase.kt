@@ -8,7 +8,7 @@ import com.esnanta.storyapp.BuildConfig
 import com.esnanta.storyapp.data.source.local.dao.UserDao
 import com.esnanta.storyapp.data.source.local.entity.UserEntity
 
-@Database(entities = [UserEntity::class], version = BuildConfig.DATABASE_VERSION_CODE, exportSchema = false)
+@Database(entities = [UserEntity::class], version = 1, exportSchema = false)
 abstract class StoryAppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
 

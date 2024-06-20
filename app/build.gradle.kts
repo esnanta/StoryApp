@@ -17,7 +17,8 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField("String", "DATABASE_NAME", "story_app.db")
+        buildConfigField("String", "TOKEN_GITHUB", "\"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\"")
+        buildConfigField("String", "DATABASE_NAME", "\"story_appx.db\"")
         buildConfigField("int", "DATABASE_VERSION_CODE", "1")
     }
 
