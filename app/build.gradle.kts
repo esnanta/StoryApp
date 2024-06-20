@@ -52,6 +52,7 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.room.common)
+    implementation(libs.androidx.datastore.preferences)
 
     // testing dependencies
     testImplementation(libs.junit)
@@ -69,5 +70,13 @@ dependencies {
     implementation (libs.androidx.room.runtime)
     testImplementation (libs.androidx.room.testing)
 
-    implementation(libs.androidx.datastore.preferences)
+    // glide dependencies
+    implementation(libs.glide)
+    ksp(libs.ksp)
+
+    // retrofit dependencies
+    implementation (libs.retrofit)
+    implementation (libs.retrofit2.converter.gson)
+    implementation (libs.okhttp3.logging.interceptor)
+
 }
