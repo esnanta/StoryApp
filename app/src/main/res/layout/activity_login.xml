@@ -101,7 +101,7 @@
         app:layout_constraintTop_toBottomOf="@+id/emailEditTextLayout"
         tools:alpha="100" />
 
-    <com.google.android.material.textfield.TextInputLayout
+    <com.esnanta.storyapp.ui.widgets.PasswordText
         android:id="@+id/passwordEditTextLayout"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
@@ -123,7 +123,7 @@
             android:ems="10"
             android:inputType="textPassword"
             tools:ignore="SpeakableTextPresentCheck" />
-    </com.google.android.material.textfield.TextInputLayout>
+    </com.esnanta.storyapp.ui.widgets.PasswordText>
 
     <Button
         android:id="@+id/loginButton"
