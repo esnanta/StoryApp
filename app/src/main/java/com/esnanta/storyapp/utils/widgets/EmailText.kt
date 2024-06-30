@@ -8,7 +8,7 @@ import androidx.appcompat.widget.AppCompatEditText
 import com.esnanta.storyapp.R
 import com.google.android.material.textfield.TextInputLayout
 
-class EmailEditText @JvmOverloads constructor(
+class EmailText @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : AppCompatEditText(context, attrs, defStyleAttr) {
 
