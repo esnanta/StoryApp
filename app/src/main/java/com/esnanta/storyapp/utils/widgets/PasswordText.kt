@@ -1,4 +1,4 @@
-package com.esnanta.storyapp.ui.widgets
+package com.esnanta.storyapp.utils.widgets
 
 import android.annotation.SuppressLint
 import android.content.Context
