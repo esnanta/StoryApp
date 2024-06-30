@@ -68,7 +68,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="text" />
+            android:inputType="text"
+            android:hint ="@string/desc_name"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
@@ -103,7 +104,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textEmailAddress" />
+            android:inputType="textEmailAddress"
+            android:hint ="@string/desc_email"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
@@ -119,7 +121,7 @@
         app:layout_constraintTop_toBottomOf="@+id/emailEditTextLayout"
         tools:alpha="100" />
 
-    <com.google.android.material.textfield.TextInputLayout
+    <com.esnanta.storyapp.ui.widgets.PasswordText
         android:id="@+id/passwordEditTextLayout"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
@@ -139,8 +141,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textPassword" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:inputType="textPassword"
+            android:hint ="@string/desc_password"/>
+    </com.esnanta.storyapp.ui.widgets.PasswordText>
 
     <Button
         android:id="@+id/signupButton"
