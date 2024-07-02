@@ -11,8 +11,7 @@ import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.esnanta.storyapp.ui.ViewModelFactory
-import com.esnanta.storyapp.data.model.UserModel
+import com.esnanta.storyapp.di.ViewModelFactory
 import com.esnanta.storyapp.databinding.ActivityLoginBinding
 import com.esnanta.storyapp.ui.main.MainActivity
 
@@ -48,7 +47,7 @@ class LoginActivity : AppCompatActivity() {
     private fun setupAction() {
         binding.loginButton.setOnClickListener {
             val email = binding.emailEditText.text.toString()
-            viewModel.saveSession(UserModel(email, "sample_token"))
+            //viewModel.saveSession(UserModel(email, "sample_token"))
             AlertDialog.Builder(this).apply {
                 setTitle("Yeah!")
                 setMessage("Anda berhasil login. Sudah tidak sabar untuk belajar ya?")

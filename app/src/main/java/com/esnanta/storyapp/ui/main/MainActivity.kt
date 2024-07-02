@@ -10,7 +10,7 @@ import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.esnanta.storyapp.ui.ViewModelFactory
+import com.esnanta.storyapp.di.ViewModelFactory
 import com.esnanta.storyapp.databinding.ActivityMainBinding
 import com.esnanta.storyapp.ui.welcome.WelcomeActivity
 
