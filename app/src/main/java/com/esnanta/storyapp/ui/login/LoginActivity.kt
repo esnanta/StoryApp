@@ -11,9 +11,13 @@ import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.esnanta.storyapp.di.ViewModelFactory
+import androidx.lifecycle.lifecycleScope
+import com.esnanta.storyapp.data.model.UserModel
 import com.esnanta.storyapp.databinding.ActivityLoginBinding
+import com.esnanta.storyapp.di.ViewModelFactory
 import com.esnanta.storyapp.ui.main.MainActivity
+import kotlinx.coroutines.flow.Flow
+
 
 class LoginActivity : AppCompatActivity() {
     private val viewModel by viewModels<LoginViewModel> {
@@ -29,6 +33,17 @@ class LoginActivity : AppCompatActivity() {
         setupView()
         setupAction()
         playAnimation()
+
+        viewModel.userSession.observe(this) { user ->
+            user?.let {
+                if (it.email.isNotEmpty()) {
+                    binding.emailEditText.setText(it.email)
+                }
+                if (it.password.isNotEmpty()) {
+                    binding.passwordEditText.setText(it.password)
+                }
+            }
+        }
     }
 
     private fun setupView() {
@@ -46,8 +61,12 @@ class LoginActivity : AppCompatActivity() {
 
     private fun setupAction() {
         binding.loginButton.setOnClickListener {
+            val userModel = viewModel.getSession()
+            //val name =
             val email = binding.emailEditText.text.toString()
-            //viewModel.saveSession(UserModel(email, "sample_token"))
+            val password = binding.passwordEditText.text.toString()
+            val token = "sample_token"
+            //viewModel.saveSession(UserModel(email, password, token))
             AlertDialog.Builder(this).apply {
                 setTitle("Yeah!")
                 setMessage("Anda berhasil login. Sudah tidak sabar untuk belajar ya?")

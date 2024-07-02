@@ -10,6 +10,7 @@ import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.esnanta.storyapp.data.model.UserModel
 import com.esnanta.storyapp.databinding.ActivitySignupBinding
 import com.esnanta.storyapp.di.ViewModelFactory
 
@@ -45,8 +46,12 @@ class SignupActivity : AppCompatActivity() {
 
     private fun setupAction() {
         binding.signupButton.setOnClickListener {
+            val name = binding.nameEditText.text.toString()
             val email = binding.emailEditText.text.toString()
+            val password = binding.passwordEditText.text.toString()
+            val token = ""
 
+            viewModel.registerSession(UserModel(name, email, password, token))
             AlertDialog.Builder(this).apply {
                 setTitle("Yeah!")
                 setMessage("Akun dengan $email sudah jadi nih. Yuk, login dan belajar coding.")
