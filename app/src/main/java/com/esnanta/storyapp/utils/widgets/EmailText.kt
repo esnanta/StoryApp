@@ -4,20 +4,28 @@ import android.content.Context
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.AttributeSet
-import androidx.appcompat.widget.AppCompatEditText
 import com.esnanta.storyapp.R
+import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
 class EmailText @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : TextInputLayout(context, attrs, defStyleAttr) {
 
-    init {
-        val editText = AppCompatEditText(context)
-        editText.id = R.id.emailEditText // Ensure the ID matches the one in the layout
-        editText.inputType = android.text.InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
-        addView(editText, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT))
+    private lateinit var editText: TextInputEditText
 
+    init {
+        // Initialization can go here if needed
+    }
+
+    override fun onFinishInflate() {
+        super.onFinishInflate()
+        editText = findViewById(R.id.emailEditText)
+
+        // Set the input type directly here
+        editText.inputType = android.text.InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
+
+        // Add text change listener for email validation
         editText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
@@ -30,13 +38,13 @@ class EmailText @JvmOverloads constructor(
     }
 
     private fun validateEmail() {
-        val email = editText?.text.toString()
-        if (email.isEmpty()) {
-            error = context.getString(R.string.error_email_empty)
+        val email = editText.text.toString()
+        error = if (email.isEmpty()) {
+            context.getString(R.string.error_email_empty)
         } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            error = context.getString(R.string.error_invalid_email)
+            context.getString(R.string.error_invalid_email)
         } else {
-            error = null
+            null
         }
     }
 }
