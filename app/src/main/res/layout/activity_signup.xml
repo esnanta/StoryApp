@@ -85,7 +85,7 @@
         app:layout_constraintTop_toBottomOf="@+id/nameEditTextLayout"
         tools:alpha="100" />
 
-    <com.google.android.material.textfield.TextInputLayout
+    <com.esnanta.storyapp.utils.widgets.EmailText
         android:id="@+id/emailEditTextLayout"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
@@ -106,7 +106,7 @@
             android:ems="10"
             android:inputType="textEmailAddress"
             android:hint ="@string/desc_email"/>
-    </com.google.android.material.textfield.TextInputLayout>
+    </com.esnanta.storyapp.utils.widgets.EmailText>
 
     <TextView
         android:id="@+id/passwordTextView"

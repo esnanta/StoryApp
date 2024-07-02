@@ -10,10 +10,15 @@ import com.google.android.material.textfield.TextInputLayout
 
 class EmailText @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : AppCompatEditText(context, attrs, defStyleAttr) {
+) : TextInputLayout(context, attrs, defStyleAttr) {
 
     init {
-        addTextChangedListener(object : TextWatcher {
+        val editText = AppCompatEditText(context)
+        editText.id = R.id.emailEditText // Ensure the ID matches the one in the layout
+        editText.inputType = android.text.InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
+        addView(editText, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT))
+
+        editText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -25,14 +30,13 @@ class EmailText @JvmOverloads constructor(
     }
 
     private fun validateEmail() {
-        val email = text.toString()
-        val emailLayout = this.parent.parent as? TextInputLayout
+        val email = editText?.text.toString()
         if (email.isEmpty()) {
-            emailLayout?.error = context.getString(R.string.error_email_empty)
+            error = context.getString(R.string.error_email_empty)
         } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            emailLayout?.error = context.getString(R.string.error_invalid_email)
+            error = context.getString(R.string.error_invalid_email)
         } else {
-            emailLayout?.error = null
+            error = null
         }
     }
 }
