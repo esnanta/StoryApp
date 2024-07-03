@@ -61,24 +61,54 @@ class LoginActivity : AppCompatActivity() {
 
     private fun setupAction() {
         binding.loginButton.setOnClickListener {
-            val userModel = viewModel.getSession()
-            //val name =
             val email = binding.emailEditText.text.toString()
             val password = binding.passwordEditText.text.toString()
-            val token = "sample_token"
-            //viewModel.saveSession(UserModel(email, password, token))
-            AlertDialog.Builder(this).apply {
-                setTitle("Yeah!")
-                setMessage("Anda berhasil login. Sudah tidak sabar untuk belajar ya?")
-                setPositiveButton("Lanjut") { _, _ ->
-                    val intent = Intent(context, MainActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                    startActivity(intent)
-                    finish()
+
+            if (viewModel.checkCredentials(email, password)) {
+                val currentUser = viewModel.getCurrentUser()
+                val token = "sample_token"
+                currentUser?.let { user ->
+                    viewModel.saveSession(UserModel(user.name, email, password, token))
                 }
-                create()
-                show()
+                showLoginSuccessDialog()
+            } else {
+                showConfirmationDialog(email, password)
             }
+        }
+    }
+
+    private fun showLoginSuccessDialog() {
+        AlertDialog.Builder(this).apply {
+            setTitle("Yeah!")
+            setMessage("Anda berhasil login. Sudah tidak sabar untuk belajar ya?")
+            setPositiveButton("Lanjut") { _, _ ->
+                val intent = Intent(context, MainActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                startActivity(intent)
+                finish()
+            }
+            create()
+            show()
+        }
+    }
+
+    private fun showConfirmationDialog(email: String, password: String) {
+        AlertDialog.Builder(this).apply {
+            setTitle("Warning")
+            setMessage("The email or password you entered is different from the stored data. Do you want to update the stored data?")
+            setPositiveButton("Yes") { _, _ ->
+                val currentUser = viewModel.getCurrentUser()
+                val token = "sample_token"
+                currentUser?.let { user ->
+                    viewModel.saveSession(UserModel(user.name, email, password, token))
+                }
+                showLoginSuccessDialog()
+            }
+            setNegativeButton("No") { dialog, _ ->
+                dialog.dismiss()
+            }
+            create()
+            show()
         }
     }
 
@@ -90,16 +120,11 @@ class LoginActivity : AppCompatActivity() {
         }.start()
 
         val title = ObjectAnimator.ofFloat(binding.titleTextView, View.ALPHA, 1f).setDuration(100)
-        val message =
-            ObjectAnimator.ofFloat(binding.messageTextView, View.ALPHA, 1f).setDuration(100)
-        val emailTextView =
-            ObjectAnimator.ofFloat(binding.emailTextView, View.ALPHA, 1f).setDuration(100)
-        val emailEditTextLayout =
-            ObjectAnimator.ofFloat(binding.emailEditTextLayout, View.ALPHA, 1f).setDuration(100)
-        val passwordTextView =
-            ObjectAnimator.ofFloat(binding.passwordTextView, View.ALPHA, 1f).setDuration(100)
-        val passwordEditTextLayout =
-            ObjectAnimator.ofFloat(binding.passwordEditTextLayout, View.ALPHA, 1f).setDuration(100)
+        val message = ObjectAnimator.ofFloat(binding.messageTextView, View.ALPHA, 1f).setDuration(100)
+        val emailTextView = ObjectAnimator.ofFloat(binding.emailTextView, View.ALPHA, 1f).setDuration(100)
+        val emailEditTextLayout = ObjectAnimator.ofFloat(binding.emailEditTextLayout, View.ALPHA, 1f).setDuration(100)
+        val passwordTextView = ObjectAnimator.ofFloat(binding.passwordTextView, View.ALPHA, 1f).setDuration(100)
+        val passwordEditTextLayout = ObjectAnimator.ofFloat(binding.passwordEditTextLayout, View.ALPHA, 1f).setDuration(100)
         val login = ObjectAnimator.ofFloat(binding.loginButton, View.ALPHA, 1f).setDuration(100)
 
         AnimatorSet().apply {
@@ -115,5 +140,4 @@ class LoginActivity : AppCompatActivity() {
             startDelay = 100
         }.start()
     }
-
 }
