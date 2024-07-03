@@ -1,19 +1,32 @@
 package com.esnanta.storyapp.data
 
 import com.esnanta.storyapp.data.model.UserModel
+import com.esnanta.storyapp.data.remote.api.ApiService
+import com.esnanta.storyapp.data.remote.response.RegisterResponse
 import com.esnanta.storyapp.data.source.local.UserPreference
+import com.esnanta.storyapp.data.remote.Result
 import kotlinx.coroutines.flow.Flow
 
 class UserRepository private constructor(
-    private val userPreference: UserPreference
+    private val userPreference: UserPreference,
+    private val apiService: ApiService
 ) {
 
     suspend fun saveSession(user: UserModel) {
         userPreference.saveSession(user)
     }
 
-    suspend fun registerSession(user: UserModel) {
-        userPreference.registerSession(user)
+//    suspend fun registerSession(user: UserModel) {
+//        userPreference.registerSession(user)
+//    }
+
+    suspend fun registerSession(name: String, email: String, password: String): Result<RegisterResponse> {
+        return try {
+            val response = apiService.register(name, email, password)
+            Result.Success(response)
+        } catch (e: Exception) {
+            Result.Error(e.localizedMessage ?: "An unknown error occurred")
+        }
     }
 
     fun getSession(): Flow<UserModel> {
@@ -28,10 +41,11 @@ class UserRepository private constructor(
         @Volatile
         private var instance: UserRepository? = null
         fun getInstance(
-            userPreference: UserPreference
+            userPreference: UserPreference,
+            apiService: ApiService
         ): UserRepository =
             instance ?: synchronized(this) {
-                instance ?: UserRepository(userPreference)
+                instance ?: UserRepository(userPreference, apiService)
             }.also { instance = it }
     }
 }

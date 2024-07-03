@@ -10,7 +10,7 @@ import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.esnanta.storyapp.data.model.UserModel
+import com.esnanta.storyapp.data.remote.Result
 import com.esnanta.storyapp.databinding.ActivitySignupBinding
 import com.esnanta.storyapp.di.ViewModelFactory
 
@@ -28,6 +28,7 @@ class SignupActivity : AppCompatActivity() {
 
         setupView()
         setupAction()
+        setupObserver()
         playAnimation()
     }
 
@@ -49,17 +50,44 @@ class SignupActivity : AppCompatActivity() {
             val name = binding.nameEditText.text.toString()
             val email = binding.emailEditText.text.toString()
             val password = binding.passwordEditText.text.toString()
-            val token = ""
 
-            viewModel.registerSession(UserModel(name, email, password, token))
-            AlertDialog.Builder(this).apply {
-                setTitle("Yeah!")
-                setMessage("Akun dengan $email sudah jadi nih. Yuk, login dan belajar coding.")
-                setPositiveButton("Lanjut") { _, _ ->
-                    finish()
+            viewModel.register(name, email, password)
+        }
+    }
+
+    private fun setupObserver() {
+        viewModel.registerResult.observe(this) { result ->
+            when (result) {
+                is Result.Loading -> {
+                    binding.progressBar.visibility = View.VISIBLE
                 }
-                create()
-                show()
+                is Result.Success -> {
+                    binding.progressBar.visibility = View.GONE
+                    // Handle successful registration
+                    val name = binding.nameEditText.text.toString()
+                    val email = binding.emailEditText.text.toString()
+                    AlertDialog.Builder(this).apply {
+                        setTitle("Yeah!")
+                        setMessage("${result.data.message}. Akun dengan nama $name dan email $email sudah jadi nih. Yuk, login dan belajar coding.")
+                        setPositiveButton("Lanjut") { _, _ ->
+                            finish()
+                        }
+                        create()
+                        show()
+                    }
+                }
+                is Result.Error -> {
+                    // Hide loading indicator
+                    binding.progressBar.visibility = View.GONE
+                    // Handle registration error
+                    AlertDialog.Builder(this).apply {
+                        setTitle("Error")
+                        setMessage(result.error)
+                        setPositiveButton("OK") { _, _ -> }
+                        create()
+                        show()
+                    }
+                }
             }
         }
     }
