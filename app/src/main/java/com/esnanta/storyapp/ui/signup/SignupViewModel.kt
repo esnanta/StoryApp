@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.esnanta.storyapp.data.UserRepository
-import com.esnanta.storyapp.data.remote.response.RegisterResponse
-import com.esnanta.storyapp.data.remote.Result
+import com.esnanta.storyapp.data.source.remote.response.RegisterResponse
+import com.esnanta.storyapp.data.source.remote.Result
 import kotlinx.coroutines.launch
 
 class SignupViewModel(private val repository: UserRepository) : ViewModel() {

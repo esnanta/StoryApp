@@ -1,4 +1,4 @@
-package com.esnanta.storyapp.data.remote.api
+package com.esnanta.storyapp.data.source.remote.api
 
 import com.esnanta.storyapp.BuildConfig
 import okhttp3.OkHttpClient

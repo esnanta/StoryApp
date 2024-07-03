@@ -1,10 +1,10 @@
 package com.esnanta.storyapp.data
 
 import com.esnanta.storyapp.data.model.UserModel
-import com.esnanta.storyapp.data.remote.api.ApiService
-import com.esnanta.storyapp.data.remote.response.RegisterResponse
+import com.esnanta.storyapp.data.source.remote.api.ApiService
+import com.esnanta.storyapp.data.source.remote.response.RegisterResponse
 import com.esnanta.storyapp.data.source.local.UserPreference
-import com.esnanta.storyapp.data.remote.Result
+import com.esnanta.storyapp.data.source.remote.Result
 import kotlinx.coroutines.flow.Flow
 
 class UserRepository private constructor(

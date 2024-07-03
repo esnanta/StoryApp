@@ -1,15 +1,9 @@
-package com.esnanta.storyapp.data.remote.api
+package com.esnanta.storyapp.data.source.remote.api
 
-import com.esnanta.storyapp.BuildConfig
-import com.esnanta.storyapp.data.remote.response.RegisterResponse
-import retrofit2.Call
+import com.esnanta.storyapp.data.source.remote.response.RegisterResponse
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
-import retrofit2.http.GET
-import retrofit2.http.Headers
 import retrofit2.http.POST
-import retrofit2.http.Path
-import retrofit2.http.Query
 
 interface ApiService {
 

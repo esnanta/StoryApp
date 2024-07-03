@@ -10,7 +10,7 @@ import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.esnanta.storyapp.data.remote.Result
+import com.esnanta.storyapp.data.source.remote.Result
 import com.esnanta.storyapp.databinding.ActivitySignupBinding
 import com.esnanta.storyapp.di.ViewModelFactory
 

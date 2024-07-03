@@ -1,4 +1,4 @@
-package com.esnanta.storyapp.data.remote
+package com.esnanta.storyapp.data.source.remote
 
 sealed class Result<out R> private constructor() {
     data class Success<out T>(val data: T) : Result<T>()
