@@ -15,11 +15,7 @@ class UserRepository private constructor(
     suspend fun saveSession(user: UserModel) {
         userPreference.saveSession(user)
     }
-
-//    suspend fun registerSession(user: UserModel) {
-//        userPreference.registerSession(user)
-//    }
-
+    
     suspend fun registerSession(name: String, email: String, password: String): Result<RegisterResponse> {
         return try {
             val response = apiService.register(name, email, password)
