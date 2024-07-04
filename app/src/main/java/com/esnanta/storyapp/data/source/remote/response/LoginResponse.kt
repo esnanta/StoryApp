@@ -2,7 +2,7 @@ package com.esnanta.storyapp.data.source.remote.response
 
 import com.google.gson.annotations.SerializedName
 
-data class Response(
+data class LoginResponse(
 
 	@field:SerializedName("loginResult")
 	val loginResult: LoginResult? = null,

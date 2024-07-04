@@ -8,15 +8,16 @@ import android.os.Bundle
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import com.esnanta.storyapp.data.model.UserModel
+import com.esnanta.storyapp.data.source.remote.Result
 import com.esnanta.storyapp.databinding.ActivityLoginBinding
 import com.esnanta.storyapp.di.ViewModelFactory
 import com.esnanta.storyapp.ui.main.MainActivity
-import kotlinx.coroutines.flow.Flow
+import com.esnanta.storyapp.ui.welcome.WelcomeActivity
 
 
 class LoginActivity : AppCompatActivity() {
@@ -32,7 +33,11 @@ class LoginActivity : AppCompatActivity() {
 
         setupView()
         setupAction()
+        observeViewModel()
         playAnimation()
+
+        binding.emailEditText.setText("andromeda@tiga.com")
+        binding.passwordEditText.setText("12345678")
     }
 
     private fun setupView() {
@@ -52,6 +57,38 @@ class LoginActivity : AppCompatActivity() {
         binding.loginButton.setOnClickListener {
             val email = binding.emailEditText.text.toString()
             val password = binding.passwordEditText.text.toString()
+
+            if (email.isNotEmpty() && password.isNotEmpty()) {
+                viewModel.login(email, password)
+            } else {
+                Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun observeViewModel() {
+        viewModel.loginResult.observe(this) { result ->
+            when (result) {
+                is Result.Success -> {
+                    val loginResponse = result.data
+                    if (loginResponse.error == false) {
+                        showLoginSuccessDialog()
+                    } else {
+                        Toast.makeText(this, loginResponse.message, Toast.LENGTH_SHORT).show()
+                    }
+                }
+                is Result.Error -> {
+                    val errorMessage = result.error
+                    Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
+                }
+                Result.Loading -> {
+                    // Handle loading state if needed
+                }
+            }
+        }
+
+        viewModel.isLoading.observe(this) { isLoading ->
+            binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
         }
     }
 

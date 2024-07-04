@@ -5,6 +5,7 @@ import com.esnanta.storyapp.data.source.remote.api.ApiService
 import com.esnanta.storyapp.data.source.remote.response.RegisterResponse
 import com.esnanta.storyapp.data.source.local.UserPreference
 import com.esnanta.storyapp.data.source.remote.Result
+import com.esnanta.storyapp.data.source.remote.response.LoginResponse
 import kotlinx.coroutines.flow.Flow
 
 class UserRepository private constructor(
@@ -14,6 +15,21 @@ class UserRepository private constructor(
 
     suspend fun saveSession(user: UserModel) {
         userPreference.saveSession(user)
+    }
+
+    suspend fun loginSession(email: String, password: String): Result<LoginResponse> {
+        return try {
+            val response = apiService.login(email, password)
+            if (response.error == false) {
+                response.loginResult?.let {
+                    val user = UserModel(email, it.token ?: "", true)
+                    saveSession(user)
+                }
+            }
+            Result.Success(response)
+        } catch (e: Exception) {
+            Result.Error(e.localizedMessage ?: "An unknown error occurred")
+        }
     }
 
     suspend fun registerSession(name: String, email: String, password: String): Result<RegisterResponse> {
