@@ -59,35 +59,35 @@ class SignupActivity : AppCompatActivity() {
         viewModel.registerResult.observe(this) { result ->
             when (result) {
                 is Result.Loading -> {
-                    binding.progressBar.visibility = View.VISIBLE
+                    // Loading handled by isLoading observer
                 }
                 is Result.Success -> {
-                    binding.progressBar.visibility = View.GONE
-                    // Handle successful registration
                     val name = binding.nameEditText.text.toString()
                     val email = binding.emailEditText.text.toString()
-                    AlertDialog.Builder(this).apply {
-                        setTitle("Yeah!")
-                        setMessage("${result.data.message}. Akun dengan nama $name dan email $email sudah jadi nih. Yuk, login dan belajar coding.")
-                        setPositiveButton("Lanjut") { _, _ ->
-                            finish()
-                        }
-                        create()
-                        show()
-                    }
+                    viewModel.onRegistrationSuccess("${result.data.message}. Akun dengan nama $name dan email $email sudah jadi nih. Yuk, login dan belajar coding.")
                 }
                 is Result.Error -> {
-                    // Hide loading indicator
-                    binding.progressBar.visibility = View.GONE
-                    // Handle registration error
-                    AlertDialog.Builder(this).apply {
-                        setTitle("Error")
-                        setMessage(result.error)
-                        setPositiveButton("OK") { _, _ -> }
-                        create()
-                        show()
-                    }
+                    viewModel.onRegistrationError(result.error)
                 }
+            }
+        }
+
+        viewModel.isLoading.observe(this) { isLoading ->
+            binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+        }
+
+        viewModel.dialogMessage.observe(this) { message ->
+            message?.let {
+                AlertDialog.Builder(this).apply {
+                    setTitle(if (viewModel.registerResult.value is Result.Error) "Error" else "Yeah!")
+                    setMessage(it)
+                    setPositiveButton("OK") { _, _ ->
+                        if (viewModel.registerResult.value is Result.Success) finish()
+                    }
+                    create()
+                    show()
+                }
+                viewModel.clearDialogMessage()
             }
         }
     }
