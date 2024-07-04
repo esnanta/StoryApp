@@ -55,6 +55,11 @@ dependencies {
     implementation(libs.androidx.room.common)
     implementation(libs.androidx.datastore.preferences)
 
+    // animation splash
+    implementation (libs.lottie)
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
+
     // testing dependencies
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
