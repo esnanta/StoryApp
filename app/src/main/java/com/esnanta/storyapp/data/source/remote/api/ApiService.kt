@@ -15,16 +15,4 @@ interface ApiService {
         @Field("password") password: String
     ): RegisterResponse
 
-
-//    @GET("users/{username}")
-//    @Headers("Authorization: token ${BuildConfig.TOKEN_GITHUB}")
-//    fun getDetail(@Path("username") username: String): Call<UserResponse>
-//
-//    @GET("users/{username}/followers")
-//    @Headers("Authorization: token ${BuildConfig.TOKEN_GITHUB}")
-//    fun getListFollower(@Path("username") username: String): Call<List<FollowerResponseItem>>
-//
-//    @GET("users/{username}/following")
-//    @Headers("Authorization: token ${BuildConfig.TOKEN_GITHUB}")
-//    fun getListFollowing(@Path("username") username: String): Call<List<FollowingResponseItem>>
 }
