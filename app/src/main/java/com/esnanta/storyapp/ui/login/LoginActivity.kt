@@ -107,26 +107,6 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun showConfirmationDialog(email: String, password: String) {
-        AlertDialog.Builder(this).apply {
-            setTitle("Warning")
-            setMessage("The email or password you entered is different from the stored data. Do you want to update the stored data?")
-            setPositiveButton("Yes") { _, _ ->
-                val currentUser = viewModel.getCurrentUser()
-                val token = "sample_token"
-                currentUser?.let { user ->
-                    viewModel.saveSession(UserModel(email, token))
-                }
-                showLoginSuccessDialog()
-            }
-            setNegativeButton("No") { dialog, _ ->
-                dialog.dismiss()
-            }
-            create()
-            show()
-        }
-    }
-
     private fun playAnimation() {
         ObjectAnimator.ofFloat(binding.imageView, View.TRANSLATION_X, -30f, 30f).apply {
             duration = 6000
