@@ -33,17 +33,6 @@ class LoginActivity : AppCompatActivity() {
         setupView()
         setupAction()
         playAnimation()
-
-        viewModel.userSession.observe(this) { user ->
-            user?.let {
-                if (it.email.isNotEmpty()) {
-                    binding.emailEditText.setText(it.email)
-                }
-                if (it.password.isNotEmpty()) {
-                    binding.passwordEditText.setText(it.password)
-                }
-            }
-        }
     }
 
     private fun setupView() {
@@ -63,17 +52,6 @@ class LoginActivity : AppCompatActivity() {
         binding.loginButton.setOnClickListener {
             val email = binding.emailEditText.text.toString()
             val password = binding.passwordEditText.text.toString()
-
-            if (viewModel.checkCredentials(email, password)) {
-                val currentUser = viewModel.getCurrentUser()
-                val token = "sample_token"
-                currentUser?.let { user ->
-                    viewModel.saveSession(UserModel(user.name, email, password, token))
-                }
-                showLoginSuccessDialog()
-            } else {
-                showConfirmationDialog(email, password)
-            }
         }
     }
 
@@ -100,7 +78,7 @@ class LoginActivity : AppCompatActivity() {
                 val currentUser = viewModel.getCurrentUser()
                 val token = "sample_token"
                 currentUser?.let { user ->
-                    viewModel.saveSession(UserModel(user.name, email, password, token))
+                    viewModel.saveSession(UserModel(email, token))
                 }
                 showLoginSuccessDialog()
             }

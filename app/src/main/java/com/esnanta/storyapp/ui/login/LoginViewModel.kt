@@ -33,11 +33,6 @@ class LoginViewModel(private val repository: UserRepository) : ViewModel() {
         }
     }
 
-    fun checkCredentials(email: String, password: String): Boolean {
-        val user = _userSession.value
-        return user?.email == email && user?.password == password
-    }
-
     fun getCurrentUser(): UserModel? {
         return _userSession.value
     }
