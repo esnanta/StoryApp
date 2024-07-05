@@ -1,6 +1,7 @@
 package com.esnanta.storyapp.data.source.remote.api
 
 import com.esnanta.storyapp.BuildConfig
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -17,8 +18,17 @@ class ApiConfig {
                 HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.NONE)
             }
 
+            val authInterceptor = Interceptor { chain ->
+                val req = chain.request()
+                val requestHeaders = req.newBuilder()
+                    .addHeader("Authorization", "Bearer ${BuildConfig.TOKEN_GITHUB}")
+                    .build()
+                chain.proceed(requestHeaders)
+            }
+
             val client = OkHttpClient.Builder()
                 .addInterceptor(loggingInterceptor)
+                .addInterceptor(authInterceptor)
                 .build()
             val retrofit = Retrofit.Builder()
                 .baseUrl("${BuildConfig.BASE_URL_API}")
