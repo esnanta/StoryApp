@@ -32,7 +32,7 @@ class ViewModelFactory(private val repository: UserRepository) : ViewModelProvid
         @JvmStatic
         fun getInstance(context: Context): ViewModelFactory {
             return INSTANCE ?: synchronized(this) {
-                INSTANCE ?: ViewModelFactory(Injection.provideRepository(context))
+                INSTANCE ?: ViewModelFactory(UserInjection.provideRepository(context))
             }.also { INSTANCE = it }
         }
     }
