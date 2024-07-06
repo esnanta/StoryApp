@@ -4,12 +4,15 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.esnanta.storyapp.data.repository.IRepository
+import com.esnanta.storyapp.data.repository.StoryRepository
 import com.esnanta.storyapp.ui.login.LoginViewModel
 import com.esnanta.storyapp.ui.main.MainViewModel
 import com.esnanta.storyapp.data.repository.UserRepository
 import com.esnanta.storyapp.ui.signup.SignupViewModel
+import com.esnanta.storyapp.ui.story.ListStoryViewModel
 
-class ViewModelFactory(private val repository: IRepository) : ViewModelProvider.NewInstanceFactory() {
+class ViewModelFactory(private val repository: IRepository) :
+    ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -23,9 +26,9 @@ class ViewModelFactory(private val repository: IRepository) : ViewModelProvider.
             modelClass.isAssignableFrom(SignupViewModel::class.java) -> {
                 SignupViewModel(repository as UserRepository) as T
             }
-//            modelClass.isAssignableFrom(StoryViewModel::class.java) -> {
-//                StoryViewModel(repository as StoryRepository) as T
-//            }
+            modelClass.isAssignableFrom(ListStoryViewModel::class.java) -> {
+                ListStoryViewModel(repository as StoryRepository) as T
+            }
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }
     }
@@ -37,7 +40,9 @@ class ViewModelFactory(private val repository: IRepository) : ViewModelProvider.
         @JvmStatic
         fun getInstance(context: Context, repositoryType: Class<out IRepository>): ViewModelFactory {
             return INSTANCE ?: synchronized(this) {
-                INSTANCE ?: ViewModelFactory(Injection.provideRepository(context, repositoryType))
+                INSTANCE ?: ViewModelFactory(
+                    Injection.provideRepository(context, repositoryType)
+                )
             }.also { INSTANCE = it }
         }
     }
