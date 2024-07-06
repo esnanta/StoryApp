@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.esnanta.storyapp.data.UserRepository
+import com.esnanta.storyapp.data.repository.UserRepository
 import com.esnanta.storyapp.data.source.remote.response.RegisterResponse
 import com.esnanta.storyapp.data.source.remote.Result
 import kotlinx.coroutines.launch

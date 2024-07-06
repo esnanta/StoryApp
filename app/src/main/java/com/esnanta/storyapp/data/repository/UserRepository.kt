@@ -1,4 +1,4 @@
-package com.esnanta.storyapp.data
+package com.esnanta.storyapp.data.repository
 
 import com.esnanta.storyapp.data.model.UserModel
 import com.esnanta.storyapp.data.source.remote.api.ApiService
@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 class UserRepository private constructor(
     private val userPreference: UserPreference,
     private val apiService: ApiService
-) {
+) : IRepository {
 
     suspend fun saveSession(user: UserModel) {
         userPreference.saveSession(user)

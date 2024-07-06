@@ -13,16 +13,16 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.esnanta.storyapp.data.model.UserModel
+import com.esnanta.storyapp.data.repository.UserRepository
 import com.esnanta.storyapp.data.source.remote.Result
 import com.esnanta.storyapp.databinding.ActivityLoginBinding
 import com.esnanta.storyapp.di.ViewModelFactory
 import com.esnanta.storyapp.ui.main.MainActivity
-import com.esnanta.storyapp.ui.welcome.WelcomeActivity
 
 
 class LoginActivity : AppCompatActivity() {
     private val viewModel by viewModels<LoginViewModel> {
-        ViewModelFactory.getInstance(this)
+        ViewModelFactory.getInstance(this, UserRepository::class.java)
     }
     private lateinit var binding: ActivityLoginBinding
 

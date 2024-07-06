@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.esnanta.storyapp.data.UserRepository
+import com.esnanta.storyapp.data.repository.UserRepository
 import com.esnanta.storyapp.data.model.UserModel
 import com.esnanta.storyapp.data.source.remote.Result
 import com.esnanta.storyapp.data.source.remote.response.LoginResponse
