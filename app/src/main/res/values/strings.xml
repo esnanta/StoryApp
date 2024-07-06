@@ -17,6 +17,7 @@
     <string name="desc_name">Enter your name</string>
     <string name="desc_email">Enter your email address</string>
     <string name="desc_password">Enter your password</string>
+    <string name="desc_photo">Foto</string>
 
     <string name="error_email_empty">Email cannot be empty</string>
     <string name="error_invalid_email">Invalid email address</string>

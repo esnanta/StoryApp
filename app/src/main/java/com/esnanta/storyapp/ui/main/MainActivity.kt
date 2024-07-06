@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.esnanta.storyapp.data.repository.UserRepository
 import com.esnanta.storyapp.di.ViewModelFactory
 import com.esnanta.storyapp.databinding.ActivityMainBinding
+import com.esnanta.storyapp.ui.story.ListStoryActivity
 import com.esnanta.storyapp.ui.welcome.WelcomeActivity
 
 class MainActivity : AppCompatActivity() {
@@ -29,6 +30,10 @@ class MainActivity : AppCompatActivity() {
         viewModel.getSession().observe(this) { user ->
             if (!user.isLogin) {
                 startActivity(Intent(this, WelcomeActivity::class.java))
+                finish()
+            }
+            else {
+                startActivity(Intent(this, ListStoryActivity::class.java))
                 finish()
             }
         }

@@ -26,5 +26,5 @@ interface ApiService {
     ): LoginResponse
 
     @GET("stories")
-    suspend fun getListStories(): ListStoryResponse
+    suspend fun getListStory(): ListStoryResponse
 }
