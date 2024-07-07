@@ -22,13 +22,12 @@ class StoryRepository private constructor(
         }
     }
 
-    suspend fun getStoryDetail(id: String): Flow<Result<DetailStoryResponse>> = flow {
-        emit(Result.Loading)
-        try {
+    suspend fun getStoryDetail(id: String): Result<DetailStoryResponse> {
+        return try {
             val response = apiService.getStoryDetail(id)
-            emit(Result.Success(response))
+            Result.Success(response)
         } catch (e: Exception) {
-            emit(Result.Error(e.message.toString()))
+            Result.Error(e.message.toString())
         }
     }
 
