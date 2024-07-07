@@ -1,11 +1,13 @@
 package com.esnanta.storyapp.ui.story
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.esnanta.storyapp.data.source.remote.response.ListStoryItem
 import com.esnanta.storyapp.databinding.ItemStoryBinding
+import com.esnanta.storyapp.ui.storydetail.DetailStoryActivity
 
 class StoryAdapter(private val stories: List<ListStoryItem>) :
     RecyclerView.Adapter<StoryAdapter.StoryViewHolder>() {
@@ -31,6 +33,13 @@ class StoryAdapter(private val stories: List<ListStoryItem>) :
             Glide.with(binding.root.context)
                 .load(story.photoUrl)
                 .into(binding.ivPhoto)
+
+            binding.root.setOnClickListener {
+                val context = binding.root.context
+                val intent = Intent(context, DetailStoryActivity::class.java)
+                intent.putExtra(DetailStoryActivity.EXTRA_STORY_ID, story.id)
+                context.startActivity(intent)
+            }
         }
     }
 }

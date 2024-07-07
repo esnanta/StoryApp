@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.esnanta.storyapp.data.repository.StoryRepository
 import com.esnanta.storyapp.ui.story.ListStoryViewModel
+import com.esnanta.storyapp.ui.storydetail.DetailStoryViewModel
 
 class StoryViewModelFactory(private val repository: StoryRepository) :
     ViewModelProvider.NewInstanceFactory() {
@@ -14,6 +15,9 @@ class StoryViewModelFactory(private val repository: StoryRepository) :
         return when {
             modelClass.isAssignableFrom(ListStoryViewModel::class.java) -> {
                 ListStoryViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(DetailStoryViewModel::class.java) -> {
+                DetailStoryViewModel(repository) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }

@@ -23,5 +23,4 @@ object Injection {
         val apiService = ApiConfig.getApiService(user.token)
         return StoryRepository.getInstance(pref, apiService)
     }
-
 }

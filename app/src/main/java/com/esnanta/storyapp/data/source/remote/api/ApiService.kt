@@ -1,5 +1,6 @@
 package com.esnanta.storyapp.data.source.remote.api
 
+import com.esnanta.storyapp.data.source.remote.response.DetailStoryResponse
 import com.esnanta.storyapp.data.source.remote.response.ListStoryResponse
 import com.esnanta.storyapp.data.source.remote.response.LoginResponse
 import com.esnanta.storyapp.data.source.remote.response.RegisterResponse
@@ -7,6 +8,7 @@ import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface ApiService {
 
@@ -27,4 +29,7 @@ interface ApiService {
 
     @GET("stories")
     suspend fun getListStory(): ListStoryResponse
+
+    @GET("stories/{id}")
+    suspend fun getStoryDetail(@Path("id") id: String): DetailStoryResponse
 }
