@@ -48,7 +48,7 @@ class LoginViewModel(private val repository: UserRepository) : ViewModel() {
         }
     }
 
-    fun getSession() {
+    private fun getSession() {
         viewModelScope.launch {
             repository.getSession().collect { user ->
                 _userSession.postValue(user)

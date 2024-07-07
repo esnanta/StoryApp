@@ -13,13 +13,12 @@ class StoryRepository private constructor(
     private val apiService: ApiService
 ) : IRepository {
 
-    fun getListStory(): Flow<Result<ListStoryResponse>> = flow {
-        emit(Result.Loading)
-        try {
+    suspend fun getListStory(): Result<ListStoryResponse> {
+        return try {
             val response = apiService.getListStory()
-            emit(Result.Success(response))
+            Result.Success(response)
         } catch (e: Exception) {
-            emit(Result.Error(e.message.toString()))
+            Result.Error(e.message.toString())
         }
     }
 

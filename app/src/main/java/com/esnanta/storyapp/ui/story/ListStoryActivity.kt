@@ -1,6 +1,8 @@
 package com.esnanta.storyapp.ui.story
 
 import android.os.Bundle
+import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,6 +25,7 @@ class ListStoryActivity : AppCompatActivity() {
 
         setupRecyclerView()
         observeViewModel()
+        viewModel.fetchListStory()
     }
 
     private fun setupRecyclerView() {
@@ -32,18 +35,31 @@ class ListStoryActivity : AppCompatActivity() {
     }
 
     private fun observeViewModel() {
-        viewModel.getListStory().observe(this) { result ->
+
+        viewModel.listStory.observe(this) { result ->
             when (result) {
                 is Result.Loading -> {
-                    // Show loading indicator
+                    // Handled by isLoading LiveData
                 }
                 is Result.Success -> {
-                    adapter = StoryAdapter(result.data.listStory)
+                    adapter = StoryAdapter(result.data)
                     binding.recyclerView.adapter = adapter
                 }
                 is Result.Error -> {
                     // Show error message
+                    Toast.makeText(this, result.error, Toast.LENGTH_SHORT).show()
                 }
+            }
+        }
+
+        viewModel.isLoading.observe(this) { isLoading ->
+            binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+        }
+
+        viewModel.dialogMessage.observe(this) { message ->
+            message?.let {
+                Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+                viewModel.clearDialogMessage()
             }
         }
     }
