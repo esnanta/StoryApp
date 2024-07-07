@@ -10,16 +10,15 @@ import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.esnanta.storyapp.data.repository.UserRepository
 import com.esnanta.storyapp.data.source.remote.Result
 import com.esnanta.storyapp.databinding.ActivitySignupBinding
-import com.esnanta.storyapp.di.ViewModelFactory
+import com.esnanta.storyapp.di.UserViewModelFactory
 
 class SignupActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignupBinding
 
     private val viewModel by viewModels<SignupViewModel> {
-        ViewModelFactory.getInstance(this, UserRepository::class.java)
+        UserViewModelFactory.getInstance(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

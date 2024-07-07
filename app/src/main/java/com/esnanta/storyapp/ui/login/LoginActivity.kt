@@ -12,17 +12,15 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.esnanta.storyapp.data.model.UserModel
-import com.esnanta.storyapp.data.repository.UserRepository
 import com.esnanta.storyapp.data.source.remote.Result
 import com.esnanta.storyapp.databinding.ActivityLoginBinding
-import com.esnanta.storyapp.di.ViewModelFactory
+import com.esnanta.storyapp.di.UserViewModelFactory
 import com.esnanta.storyapp.ui.main.MainActivity
 
 
 class LoginActivity : AppCompatActivity() {
     private val viewModel by viewModels<LoginViewModel> {
-        ViewModelFactory.getInstance(this, UserRepository::class.java)
+        UserViewModelFactory.getInstance(this)
     }
     private lateinit var binding: ActivityLoginBinding
 

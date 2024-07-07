@@ -4,14 +4,13 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.esnanta.storyapp.data.repository.StoryRepository
 import com.esnanta.storyapp.data.source.remote.Result
 import com.esnanta.storyapp.databinding.ActivityListStoryBinding
-import com.esnanta.storyapp.di.ViewModelFactory
+import com.esnanta.storyapp.di.StoryViewModelFactory
 
 class ListStoryActivity : AppCompatActivity() {
     private val viewModel by viewModels<ListStoryViewModel> {
-        ViewModelFactory.getInstance(this, StoryRepository::class.java)
+        StoryViewModelFactory.getInstance(this)
     }
 
     private lateinit var binding: ActivityListStoryBinding

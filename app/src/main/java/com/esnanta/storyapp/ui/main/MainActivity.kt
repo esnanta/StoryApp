@@ -10,15 +10,14 @@ import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.esnanta.storyapp.data.repository.UserRepository
-import com.esnanta.storyapp.di.ViewModelFactory
 import com.esnanta.storyapp.databinding.ActivityMainBinding
+import com.esnanta.storyapp.di.UserViewModelFactory
 import com.esnanta.storyapp.ui.story.ListStoryActivity
 import com.esnanta.storyapp.ui.welcome.WelcomeActivity
 
 class MainActivity : AppCompatActivity() {
     private val viewModel by viewModels<MainViewModel> {
-        ViewModelFactory.getInstance(this, UserRepository::class.java)
+        UserViewModelFactory.getInstance(this)
     }
     private lateinit var binding: ActivityMainBinding
 
