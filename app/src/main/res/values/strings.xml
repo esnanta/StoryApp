@@ -19,6 +19,10 @@
     <string name="desc_password">Enter your password</string>
     <string name="desc_photo">Foto</string>
 
+    <string name="menu_home">Home</string>
+    <string name="menu_login">Login</string>
+    <string name="menu_logout">Logout</string>
+
     <string name="error_email_empty">Email cannot be empty</string>
     <string name="error_invalid_email">Invalid email address</string>
 </resources>
