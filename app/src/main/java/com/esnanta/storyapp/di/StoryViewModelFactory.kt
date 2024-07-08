@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.esnanta.storyapp.data.repository.StoryRepository
 import com.esnanta.storyapp.ui.story.ListStoryViewModel
-import com.esnanta.storyapp.ui.storydetail.DetailStoryViewModel
+import com.esnanta.storyapp.ui.story.DetailStoryViewModel
 
 class StoryViewModelFactory(private val repository: StoryRepository) :
     ViewModelProvider.NewInstanceFactory() {

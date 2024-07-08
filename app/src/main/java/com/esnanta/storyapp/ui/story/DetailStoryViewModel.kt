@@ -1,4 +1,4 @@
-package com.esnanta.storyapp.ui.storydetail
+package com.esnanta.storyapp.ui.story
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

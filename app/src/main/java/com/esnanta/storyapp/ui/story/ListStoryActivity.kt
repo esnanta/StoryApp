@@ -19,7 +19,7 @@ class ListStoryActivity : AppCompatActivity() {
     }
 
     private lateinit var binding: ActivityListStoryBinding
-    private lateinit var adapter: StoryAdapter
+    private lateinit var adapter: ListStoryAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,7 +55,7 @@ class ListStoryActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView() {
-        adapter = StoryAdapter(emptyList())
+        adapter = ListStoryAdapter(emptyList())
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.adapter = adapter
     }
@@ -68,7 +68,7 @@ class ListStoryActivity : AppCompatActivity() {
                     // Handled by isLoading LiveData
                 }
                 is Result.Success -> {
-                    adapter = StoryAdapter(result.data)
+                    adapter = ListStoryAdapter(result.data)
                     binding.recyclerView.adapter = adapter
                 }
                 is Result.Error -> {

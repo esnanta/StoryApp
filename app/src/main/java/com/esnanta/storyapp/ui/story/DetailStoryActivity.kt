@@ -1,4 +1,4 @@
-package com.esnanta.storyapp.ui.storydetail
+package com.esnanta.storyapp.ui.story
 
 import android.os.Bundle
 import android.view.Menu
