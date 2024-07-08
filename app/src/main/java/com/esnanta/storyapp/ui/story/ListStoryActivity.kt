@@ -7,7 +7,7 @@ import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.esnanta.storyapp.data.source.remote.Result
 import com.esnanta.storyapp.databinding.ActivityListStoryBinding
-import com.esnanta.storyapp.di.StoryViewModelFactory
+import com.esnanta.storyapp.utils.factory.StoryViewModelFactory
 
 class ListStoryActivity : BaseStoryActivity() {
     private val viewModel by viewModels<ListStoryViewModel> {

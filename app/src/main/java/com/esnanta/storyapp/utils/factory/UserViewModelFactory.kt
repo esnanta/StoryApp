@@ -1,9 +1,10 @@
-package com.esnanta.storyapp.di
+package com.esnanta.storyapp.utils.factory
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.esnanta.storyapp.data.repository.UserRepository
+import com.esnanta.storyapp.di.Injection
 import com.esnanta.storyapp.ui.login.LoginViewModel
 import com.esnanta.storyapp.ui.main.MainViewModel
 import com.esnanta.storyapp.ui.signup.SignupViewModel

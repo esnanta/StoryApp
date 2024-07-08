@@ -6,7 +6,7 @@ import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.esnanta.storyapp.R
-import com.esnanta.storyapp.di.StoryViewModelFactory
+import com.esnanta.storyapp.utils.factory.StoryViewModelFactory
 import com.esnanta.storyapp.ui.main.MainActivity
 
 abstract class BaseStoryActivity : AppCompatActivity() {

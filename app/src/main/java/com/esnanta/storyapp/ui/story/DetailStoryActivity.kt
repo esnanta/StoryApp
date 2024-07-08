@@ -1,17 +1,13 @@
 package com.esnanta.storyapp.ui.story
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
-import com.esnanta.storyapp.R
 import com.esnanta.storyapp.data.source.remote.Result
 import com.esnanta.storyapp.databinding.ActivityDetailStoryBinding
-import com.esnanta.storyapp.di.StoryViewModelFactory
+import com.esnanta.storyapp.utils.factory.StoryViewModelFactory
 
 class DetailStoryActivity : BaseStoryActivity() {
     private val viewModel by viewModels<DetailStoryViewModel> {

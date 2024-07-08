@@ -11,7 +11,7 @@ import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.esnanta.storyapp.databinding.ActivityMainBinding
-import com.esnanta.storyapp.di.UserViewModelFactory
+import com.esnanta.storyapp.utils.factory.UserViewModelFactory
 import com.esnanta.storyapp.ui.story.ListStoryActivity
 import com.esnanta.storyapp.ui.welcome.WelcomeActivity
 
