@@ -31,10 +31,6 @@ class MainActivity : AppCompatActivity() {
                 startActivity(Intent(this, WelcomeActivity::class.java))
                 finish()
             }
-            else {
-                startActivity(Intent(this, ListStoryActivity::class.java))
-                finish()
-            }
         }
 
         setupView()
@@ -56,6 +52,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupAction() {
+        binding.listStoryButton.setOnClickListener {
+            startActivity(Intent(this, ListStoryActivity::class.java))
+            finish()
+        }
+
         binding.logoutButton.setOnClickListener {
             viewModel.logout()
         }

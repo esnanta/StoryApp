@@ -1,11 +1,19 @@
 package com.esnanta.storyapp.ui.story
 
+import android.content.Intent
 import android.view.Menu
 import android.view.MenuItem
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.esnanta.storyapp.R
+import com.esnanta.storyapp.di.StoryViewModelFactory
+import com.esnanta.storyapp.ui.main.MainActivity
 
 abstract class BaseStoryActivity : AppCompatActivity() {
+
+    private val viewModel by viewModels<ListStoryViewModel> {
+        StoryViewModelFactory.getInstance(this)
+    }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
@@ -15,11 +23,12 @@ abstract class BaseStoryActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_home -> {
-                // Handle home action
+                goHome()
                 true
             }
             R.id.action_log_out -> {
-                // Handle log out action
+                viewModel.logout()
+                goHome()
                 true
             }
             android.R.id.home -> {
@@ -28,5 +37,12 @@ abstract class BaseStoryActivity : AppCompatActivity() {
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun goHome(){
+        val intent = Intent(this, MainActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
+        finish()
     }
 }

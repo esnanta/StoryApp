@@ -32,6 +32,12 @@ class ListStoryViewModel(private val repository: StoryRepository) : ViewModel() 
         }
     }
 
+    fun logout() {
+        viewModelScope.launch {
+            repository.logout()
+        }
+    }
+
     fun clearDialogMessage() {
         _dialogMessage.value = null
     }
