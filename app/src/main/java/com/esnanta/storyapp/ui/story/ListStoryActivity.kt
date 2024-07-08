@@ -13,7 +13,7 @@ import com.esnanta.storyapp.data.source.remote.Result
 import com.esnanta.storyapp.databinding.ActivityListStoryBinding
 import com.esnanta.storyapp.di.StoryViewModelFactory
 
-class ListStoryActivity : AppCompatActivity() {
+class ListStoryActivity : BaseStoryActivity() {
     private val viewModel by viewModels<ListStoryViewModel> {
         StoryViewModelFactory.getInstance(this)
     }
@@ -33,25 +33,6 @@ class ListStoryActivity : AppCompatActivity() {
         setupRecyclerView()
         observeViewModel()
         viewModel.fetchListStory()
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.main_menu, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.action_home -> {
-                // Handle home action
-                true
-            }
-            R.id.action_log_out -> {
-                // Handle log out action
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
     }
 
     private fun setupRecyclerView() {

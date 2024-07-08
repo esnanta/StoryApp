@@ -13,7 +13,7 @@ import com.esnanta.storyapp.data.source.remote.Result
 import com.esnanta.storyapp.databinding.ActivityDetailStoryBinding
 import com.esnanta.storyapp.di.StoryViewModelFactory
 
-class DetailStoryActivity : AppCompatActivity() {
+class DetailStoryActivity : BaseStoryActivity() {
     private val viewModel by viewModels<DetailStoryViewModel> {
         StoryViewModelFactory.getInstance(this)
     }
@@ -34,29 +34,6 @@ class DetailStoryActivity : AppCompatActivity() {
         }
 
         observeViewModel()
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.main_menu, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.action_home -> {
-                // Handle home action
-                true
-            }
-            R.id.action_log_out -> {
-                // Handle log out action
-                true
-            }
-            android.R.id.home -> {
-                onBackPressedDispatcher.onBackPressed()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
     }
 
     private fun observeViewModel() {
