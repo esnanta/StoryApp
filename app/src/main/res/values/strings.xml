@@ -23,6 +23,10 @@
     <string name="menu_home">Home</string>
     <string name="menu_login">Login</string>
     <string name="menu_logout">Logout</string>
+    <string name="logout_confirmation_title">Logout Confirmation</string>
+    <string name="logout_confirmation_message">Are you sure you want to logout?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 
     <string name="error_email_empty">Email cannot be empty</string>
     <string name="error_invalid_email">Invalid email address</string>

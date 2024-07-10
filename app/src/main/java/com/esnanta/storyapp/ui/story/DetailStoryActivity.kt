@@ -7,9 +7,10 @@ import androidx.activity.viewModels
 import com.bumptech.glide.Glide
 import com.esnanta.storyapp.data.source.remote.Result
 import com.esnanta.storyapp.databinding.ActivityDetailStoryBinding
+import com.esnanta.storyapp.ui.base.BaseActivity
 import com.esnanta.storyapp.utils.factory.StoryViewModelFactory
 
-class DetailStoryActivity : BaseStoryActivity() {
+class DetailStoryActivity : BaseActivity() {
     private val viewModel by viewModels<DetailStoryViewModel> {
         StoryViewModelFactory.getInstance(this)
     }
@@ -22,7 +23,6 @@ class DetailStoryActivity : BaseStoryActivity() {
         setContentView(binding.root)
 
         setSupportActionBar(binding.toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val storyId = intent.getStringExtra(EXTRA_STORY_ID)
         if (storyId != null) {

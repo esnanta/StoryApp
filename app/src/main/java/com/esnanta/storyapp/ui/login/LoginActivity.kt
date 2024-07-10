@@ -11,14 +11,14 @@ import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import com.esnanta.storyapp.data.source.remote.Result
 import com.esnanta.storyapp.databinding.ActivityLoginBinding
-import com.esnanta.storyapp.utils.factory.UserViewModelFactory
+import com.esnanta.storyapp.ui.base.BaseActivity
 import com.esnanta.storyapp.ui.main.MainActivity
+import com.esnanta.storyapp.utils.factory.UserViewModelFactory
 
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : BaseActivity() {
     private val viewModel by viewModels<LoginViewModel> {
         UserViewModelFactory.getInstance(this)
     }
@@ -28,6 +28,9 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        setSupportActionBar(binding.toolbar)
+        //supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         setupView()
         setupAction()
@@ -48,7 +51,7 @@ class LoginActivity : AppCompatActivity() {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN
             )
         }
-        supportActionBar?.hide()
+        //supportActionBar?.hide()
     }
 
     private fun setupAction() {

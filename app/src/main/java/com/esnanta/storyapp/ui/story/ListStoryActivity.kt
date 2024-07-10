@@ -7,9 +7,10 @@ import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.esnanta.storyapp.data.source.remote.Result
 import com.esnanta.storyapp.databinding.ActivityListStoryBinding
+import com.esnanta.storyapp.ui.base.BaseActivity
 import com.esnanta.storyapp.utils.factory.StoryViewModelFactory
 
-class ListStoryActivity : BaseStoryActivity() {
+class ListStoryActivity : BaseActivity() {
     private val viewModel by viewModels<ListStoryViewModel> {
         StoryViewModelFactory.getInstance(this)
     }
@@ -23,8 +24,6 @@ class ListStoryActivity : BaseStoryActivity() {
         setContentView(binding.root)
 
         setSupportActionBar(binding.toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setDisplayShowHomeEnabled(true)
 
         setupRecyclerView()
         observeViewModel()

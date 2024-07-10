@@ -9,13 +9,13 @@ import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import com.esnanta.storyapp.databinding.ActivityMainBinding
-import com.esnanta.storyapp.utils.factory.UserViewModelFactory
+import com.esnanta.storyapp.ui.base.BaseActivity
 import com.esnanta.storyapp.ui.story.ListStoryActivity
 import com.esnanta.storyapp.ui.welcome.WelcomeActivity
+import com.esnanta.storyapp.utils.factory.UserViewModelFactory
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
     private val viewModel by viewModels<MainViewModel> {
         UserViewModelFactory.getInstance(this)
     }
@@ -25,6 +25,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        setSupportActionBar(binding.toolbar)
 
         viewModel.getSession().observe(this) { user ->
             if (!user.isLogin) {
@@ -48,7 +50,7 @@ class MainActivity : AppCompatActivity() {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN
             )
         }
-        supportActionBar?.hide()
+        //supportActionBar?.hide()
     }
 
     private fun setupAction() {
@@ -58,8 +60,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.logoutButton.setOnClickListener {
-            viewModel.logout()
+            viewModel.showLogoutConfirmationDialog(this) {
+                // Perform any additional actions if needed
+            }
         }
+
     }
 
     private fun playAnimation() {

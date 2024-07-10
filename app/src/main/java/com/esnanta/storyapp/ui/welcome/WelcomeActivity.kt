@@ -8,18 +8,21 @@ import android.os.Bundle
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
-import androidx.appcompat.app.AppCompatActivity
 import com.esnanta.storyapp.databinding.ActivityWelcomeBinding
+import com.esnanta.storyapp.ui.base.BaseActivity
 import com.esnanta.storyapp.ui.login.LoginActivity
 import com.esnanta.storyapp.ui.signup.SignupActivity
 
-class WelcomeActivity : AppCompatActivity() {
+class WelcomeActivity : BaseActivity() {
     private lateinit var binding: ActivityWelcomeBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityWelcomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        setSupportActionBar(binding.toolbar)
+        //supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         setupView()
         setupAction()
@@ -36,7 +39,7 @@ class WelcomeActivity : AppCompatActivity() {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN
             )
         }
-        supportActionBar?.hide()
+        //supportActionBar?.hide()
     }
 
     private fun setupAction() {
