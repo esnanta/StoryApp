@@ -1,5 +1,6 @@
 package com.esnanta.storyapp.ui.story
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -8,6 +9,7 @@ import com.bumptech.glide.Glide
 import com.esnanta.storyapp.data.source.remote.Result
 import com.esnanta.storyapp.databinding.ActivityDetailStoryBinding
 import com.esnanta.storyapp.ui.base.BaseActivity
+import com.esnanta.storyapp.ui.welcome.WelcomeActivity
 import com.esnanta.storyapp.utils.factory.StoryViewModelFactory
 
 class DetailStoryActivity : BaseActivity() {
@@ -23,8 +25,8 @@ class DetailStoryActivity : BaseActivity() {
         setContentView(binding.root)
 
         setSupportActionBar(binding.toolbar)
-        binding.fabCamera.setOnClickListener {
-            Toast.makeText(this, "FAB Clicked", Toast.LENGTH_SHORT).show()
+        binding.fabAddStory.setOnClickListener {
+            startActivity(Intent(this, AddStoryActivity::class.java))
         }
 
         observeViewModel()

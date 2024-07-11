@@ -14,12 +14,19 @@
     <string name="greeting">Halo %1$s,</string>
     <string name="logout">Keluar</string>
     <string name="list_story">Daftar Cerita</string>
+    <string name="description">Description</string>
+
+    <string name="camera">Kamera</string>
+    <string name="gallery">Galeri</string>
+    <string name="upload">Unggah</string>
+    <string name="empty_image_warning">Silakan masukkan berkas gambar terlebih dahulu.</string>
 
     <string name="desc_name">Enter your name</string>
     <string name="desc_email">Enter your email address</string>
     <string name="desc_password">Enter your password</string>
-    <string name="desc_photo">Foto</string>
-    <string name="desc_fab_camera">Camera Floating Button</string>
+    <string name="desc_image">Image Preview</string>
+    <string name="desc_image_preview">Image Preview</string>
+    <string name="desc_add_story">Add Story Floating Button</string>
 
     <string name="menu_home">Home</string>
     <string name="menu_login">Login</string>
