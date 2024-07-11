@@ -24,10 +24,12 @@ class ListStoryActivity : BaseActivity() {
         setContentView(binding.root)
 
         setSupportActionBar(binding.toolbar)
+        binding.fabCamera.setOnClickListener {
+            Toast.makeText(this, "FAB Clicked", Toast.LENGTH_SHORT).show()
+        }
 
         setupRecyclerView()
         observeViewModel()
-        viewModel.fetchListStory()
     }
 
     private fun setupRecyclerView() {
@@ -64,5 +66,7 @@ class ListStoryActivity : BaseActivity() {
                 viewModel.clearDialogMessage()
             }
         }
+
+        viewModel.fetchListStory()
     }
 }

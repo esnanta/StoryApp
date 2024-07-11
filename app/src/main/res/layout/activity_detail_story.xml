@@ -58,4 +58,16 @@
             android:textSize="12sp"
             android:textColor="@android:color/darker_gray" />
     </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabCamera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_baseline_camera_alt_24"
+        android:contentDescription="@string/desc_fab_camera"
+        android:tint="@android:color/white"
+        app:backgroundTint="?attr/colorPrimary" />
 </RelativeLayout>

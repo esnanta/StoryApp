@@ -23,16 +23,19 @@ class DetailStoryActivity : BaseActivity() {
         setContentView(binding.root)
 
         setSupportActionBar(binding.toolbar)
-
-        val storyId = intent.getStringExtra(EXTRA_STORY_ID)
-        if (storyId != null) {
-            viewModel.fetchStoryDetail(storyId)
+        binding.fabCamera.setOnClickListener {
+            Toast.makeText(this, "FAB Clicked", Toast.LENGTH_SHORT).show()
         }
 
         observeViewModel()
     }
 
     private fun observeViewModel() {
+        val storyId = intent.getStringExtra(EXTRA_STORY_ID)
+        if (storyId != null) {
+            viewModel.fetchStoryDetail(storyId)
+        }
+
         viewModel.isLoading.observe(this) { isLoading ->
             binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
         }
