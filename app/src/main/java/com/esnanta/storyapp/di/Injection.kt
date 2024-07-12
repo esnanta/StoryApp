@@ -25,8 +25,10 @@ object Injection {
         return StoryRepository.getInstance(pref, apiService)
     }
 
-    fun provideAddStoryRepository(): UploadRepository {
-        val apiService = ApiConfig.getApiService()
-        return UploadRepository.getInstance(apiService)
+    fun provideAddStoryRepository(context: Context): UploadRepository {
+        val pref = UserPreference.getInstance(context.dataStore)
+        val user = runBlocking { pref.getSession().first() }
+        val apiService = ApiConfig.getApiService(user.token)
+        return UploadRepository.getInstance(pref, apiService)
     }
 }

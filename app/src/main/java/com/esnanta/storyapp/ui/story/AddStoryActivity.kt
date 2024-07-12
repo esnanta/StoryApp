@@ -11,14 +11,24 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import com.esnanta.storyapp.R
 import com.esnanta.storyapp.data.source.remote.Result
+import com.esnanta.storyapp.data.source.remote.api.ApiConfig
+import com.esnanta.storyapp.data.source.remote.response.AddStoryResponse
 import com.esnanta.storyapp.databinding.ActivityAddStoryBinding
 import com.esnanta.storyapp.ui.base.BaseActivity
 import com.esnanta.storyapp.utils.factory.AddStoryViewModelFactory
 import com.esnanta.storyapp.utils.widgets.getImageUri
 import com.esnanta.storyapp.utils.widgets.reduceFileImage
 import com.esnanta.storyapp.utils.widgets.uriToFile
+import com.google.gson.Gson
+import kotlinx.coroutines.launch
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
+import retrofit2.HttpException
 
 class AddStoryActivity : BaseActivity() {
 
@@ -26,7 +36,7 @@ class AddStoryActivity : BaseActivity() {
     private var currentImageUri: Uri? = null
 
     private val viewModel by viewModels<AddStoryViewModel> {
-        AddStoryViewModelFactory.getInstance()
+        AddStoryViewModelFactory.getInstance(this)
     }
 
     private val requestPermissionLauncher =
@@ -99,27 +109,27 @@ class AddStoryActivity : BaseActivity() {
             Log.d("Image File", "showImage: ${imageFile.path}")
             val description = "Ini adalah deksripsi gambar"
 
-//            showLoading(true)
-//            val requestBody = description.toRequestBody("text/plain".toMediaType())
-//            val requestImageFile = imageFile.asRequestBody("image/jpeg".toMediaType())
-//            val multipartBody = MultipartBody.Part.createFormData(
-//                "photo",
-//                imageFile.name,
-//                requestImageFile
-//            )
-//            lifecycleScope.launch {
-//                try {
-//                    val apiService = ApiConfig.getApiService()
-//                    val successResponse = apiService.uploadImage(multipartBody, requestBody)
-//                    showToast(successResponse.message)
-//                    showLoading(false)
-//                } catch (e: HttpException) {
-//                    val errorBody = e.response()?.errorBody()?.string()
-//                    val errorResponse = Gson().fromJson(errorBody, FileUploadResponse::class.java)
-//                    showToast(errorResponse.message)
-//                    showLoading(false)
-//                }
-//            }
+            showLoading(true)
+            val requestBody = description.toRequestBody("text/plain".toMediaType())
+            val requestImageFile = imageFile.asRequestBody("image/jpeg".toMediaType())
+            val multipartBody = MultipartBody.Part.createFormData(
+                "photo",
+                imageFile.name,
+                requestImageFile
+            )
+            lifecycleScope.launch {
+                try {
+                    val apiService = ApiConfig.getApiService()
+                    val successResponse = apiService.addStory(multipartBody, requestBody)
+                    successResponse.message?.let { showToast(it) }
+                    showLoading(false)
+                } catch (e: HttpException) {
+                    val errorBody = e.response()?.errorBody()?.string()
+                    val errorResponse = Gson().fromJson(errorBody, AddStoryResponse::class.java)
+                    errorResponse.message?.let { showToast(it) }
+                    showLoading(false)
+                }
+            }
 
             viewModel.uploadImage(imageFile, description).observe(this) { result ->
                 if (result != null) {

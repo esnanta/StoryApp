@@ -1,6 +1,7 @@
 package com.esnanta.storyapp.data.repository
 
 import androidx.lifecycle.liveData
+import com.esnanta.storyapp.data.source.local.UserPreference
 import java.io.File
 import com.esnanta.storyapp.data.source.remote.api.ApiService
 import com.esnanta.storyapp.data.source.remote.Result
@@ -13,6 +14,7 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.HttpException
 
 class UploadRepository private constructor(
+    private val userPreference: UserPreference,
     private val apiService: ApiService
 ) {
 
@@ -39,9 +41,11 @@ class UploadRepository private constructor(
     companion object {
         @Volatile
         private var instance: UploadRepository? = null
-        fun getInstance(apiService: ApiService) =
+        fun getInstance(
+            userPreference: UserPreference,
+            apiService: ApiService) =
             instance ?: synchronized(this) {
-                instance ?: UploadRepository(apiService)
+                instance ?: UploadRepository(userPreference, apiService)
             }.also { instance = it }
     }
 }

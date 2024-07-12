@@ -1,5 +1,6 @@
 package com.esnanta.storyapp.utils.factory
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.esnanta.storyapp.data.repository.UploadRepository
@@ -24,9 +25,11 @@ class AddStoryViewModelFactory(private val repository: UploadRepository) :
         private var instance: AddStoryViewModelFactory? = null
 
         @JvmStatic
-        fun getInstance() =
+        fun getInstance(context: Context) =
             instance ?: synchronized(this) {
-                instance ?: AddStoryViewModelFactory(Injection.provideAddStoryRepository())
+                instance ?: AddStoryViewModelFactory(
+                    Injection.provideAddStoryRepository(context)
+                )
             }.also { instance = it }
     }
 }
