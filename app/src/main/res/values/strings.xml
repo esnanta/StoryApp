@@ -19,6 +19,8 @@
     <string name="camera">Kamera</string>
     <string name="gallery">Galeri</string>
     <string name="upload">Unggah</string>
+    <string name="upload_success">Image uploaded</string>
+    <string name="unknown_error">Unknown error</string>
     <string name="empty_image_warning">Silakan masukkan berkas gambar terlebih dahulu.</string>
 
     <string name="desc_name">Enter your name</string>

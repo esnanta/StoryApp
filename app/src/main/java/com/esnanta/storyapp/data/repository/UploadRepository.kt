@@ -35,7 +35,6 @@ class UploadRepository private constructor(
             val errorResponse = Gson().fromJson(errorBody, AddStoryResponse::class.java)
             emit(errorResponse.message?.let { Result.Error(it) })
         }
-
     }
 
     companion object {
@@ -43,7 +42,8 @@ class UploadRepository private constructor(
         private var instance: UploadRepository? = null
         fun getInstance(
             userPreference: UserPreference,
-            apiService: ApiService) =
+            apiService: ApiService
+        ) =
             instance ?: synchronized(this) {
                 instance ?: UploadRepository(userPreference, apiService)
             }.also { instance = it }

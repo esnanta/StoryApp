@@ -11,24 +11,14 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.lifecycleScope
 import com.esnanta.storyapp.R
 import com.esnanta.storyapp.data.source.remote.Result
-import com.esnanta.storyapp.data.source.remote.api.ApiConfig
-import com.esnanta.storyapp.data.source.remote.response.AddStoryResponse
 import com.esnanta.storyapp.databinding.ActivityAddStoryBinding
 import com.esnanta.storyapp.ui.base.BaseActivity
 import com.esnanta.storyapp.utils.factory.AddStoryViewModelFactory
 import com.esnanta.storyapp.utils.widgets.getImageUri
 import com.esnanta.storyapp.utils.widgets.reduceFileImage
 import com.esnanta.storyapp.utils.widgets.uriToFile
-import com.google.gson.Gson
-import kotlinx.coroutines.launch
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.MultipartBody
-import okhttp3.RequestBody.Companion.asRequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
-import retrofit2.HttpException
 
 class AddStoryActivity : BaseActivity() {
 
@@ -106,47 +96,26 @@ class AddStoryActivity : BaseActivity() {
     private fun uploadImage() {
         currentImageUri?.let { uri ->
             val imageFile = uriToFile(uri, this).reduceFileImage()
-            Log.d("Image File", "showImage: ${imageFile.path}")
-            val description = "Ini adalah deksripsi gambar"
-
-            showLoading(true)
-            val requestBody = description.toRequestBody("text/plain".toMediaType())
-            val requestImageFile = imageFile.asRequestBody("image/jpeg".toMediaType())
-            val multipartBody = MultipartBody.Part.createFormData(
-                "photo",
-                imageFile.name,
-                requestImageFile
-            )
-            lifecycleScope.launch {
-                try {
-                    val apiService = ApiConfig.getApiService()
-                    val successResponse = apiService.addStory(multipartBody, requestBody)
-                    successResponse.message?.let { showToast(it) }
-                    showLoading(false)
-                } catch (e: HttpException) {
-                    val errorBody = e.response()?.errorBody()?.string()
-                    val errorResponse = Gson().fromJson(errorBody, AddStoryResponse::class.java)
-                    errorResponse.message?.let { showToast(it) }
-                    showLoading(false)
-                }
+            val description = binding.descriptionEditText.text.toString()
+            if (description.isEmpty()) {
+                showToast(getString(R.string.empty_image_warning))
+                return
             }
 
             viewModel.uploadImage(imageFile, description).observe(this) { result ->
-                if (result != null) {
-                    when (result) {
-                        is Result.Loading -> {
-                            showLoading(true)
-                        }
-
-                        is Result.Success -> {
-                            result.data.message?.let { showToast(it) }
-                            showLoading(false)
-                        }
-
-                        is Result.Error -> {
-                            showToast(result.error)
-                            showLoading(false)
-                        }
+                when (result) {
+                    is Result.Loading -> showLoading(true)
+                    is Result.Success -> {
+                        showToast(result.data.message ?: getString(R.string.upload_success))
+                        showLoading(false)
+                    }
+                    is Result.Error -> {
+                        showToast(result.error)
+                        showLoading(false)
+                    }
+                    else -> {
+                        showToast(getString(R.string.unknown_error))
+                        showLoading(false)
                     }
                 }
             }
@@ -154,7 +123,7 @@ class AddStoryActivity : BaseActivity() {
     }
 
     private fun showLoading(isLoading: Boolean) {
-        binding.progressIndicator.visibility = if (isLoading) View.VISIBLE else View.GONE
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
     private fun showToast(message: String) {
