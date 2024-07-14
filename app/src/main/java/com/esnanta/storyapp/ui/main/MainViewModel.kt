@@ -9,17 +9,14 @@ import androidx.lifecycle.viewModelScope
 import com.esnanta.storyapp.R
 import com.esnanta.storyapp.data.repository.UserRepository
 import com.esnanta.storyapp.data.model.UserModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainViewModel(private val repository: UserRepository) : ViewModel() {
+
     fun getSession(): LiveData<UserModel> {
         return repository.getSession().asLiveData()
-    }
-
-    fun logout() {
-        viewModelScope.launch {
-            repository.logout()
-        }
     }
 
     fun showLogoutConfirmationDialog(context: Context, onLogoutConfirmed: () -> Unit) {
@@ -35,5 +32,13 @@ class MainViewModel(private val repository: UserRepository) : ViewModel() {
                 dialog.dismiss()
             }
             .show()
+    }
+
+    private fun logout() {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                repository.logout()
+            }
+        }
     }
 }

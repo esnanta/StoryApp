@@ -8,7 +8,9 @@ import com.esnanta.storyapp.data.repository.UserRepository
 import com.esnanta.storyapp.data.model.UserModel
 import com.esnanta.storyapp.data.source.remote.Result
 import com.esnanta.storyapp.data.source.remote.response.LoginResponse
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class LoginViewModel(private val repository: UserRepository) : ViewModel() {
 
@@ -31,27 +33,33 @@ class LoginViewModel(private val repository: UserRepository) : ViewModel() {
     fun login(email: String, password: String) {
         viewModelScope.launch {
             _isLoading.value = true
-            val result = repository.loginSession(email, password)
-            _isLoading.value = false
-            _loginResult.postValue(result)
-            if (result is Result.Success) {
-                repository.getSession().collect { user ->
-                    _userSession.postValue(user)
+            withContext(Dispatchers.IO) {
+                val result = repository.loginSession(email, password)
+                _loginResult.postValue(result)
+                if (result is Result.Success) {
+                    repository.getSession().collect { user ->
+                        _userSession.postValue(user)
+                    }
                 }
             }
+            _isLoading.value = false
         }
     }
 
     fun saveSession(user: UserModel) {
         viewModelScope.launch {
-            repository.saveSession(user)
+            withContext(Dispatchers.IO) {
+                repository.saveSession(user)
+            }
         }
     }
 
     private fun getSession() {
         viewModelScope.launch {
-            repository.getSession().collect { user ->
-                _userSession.postValue(user)
+            withContext(Dispatchers.IO) {
+                repository.getSession().collect { user ->
+                    _userSession.postValue(user)
+                }
             }
         }
     }
