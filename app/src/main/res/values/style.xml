@@ -4,4 +4,10 @@
         <item name="android:backgroundTint">@color/colorPrimary</item>
         <item name="android:textColor">@color/colorOnPrimary</item>
     </style>
+
+    <style name="AlertDialogCustom" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
+        <!-- on below line adding text color for our text in alert dialog -->
+        <item name="colorPrimary">@color/colorPrimaryVariant</item>
+        <item name="android:textColor">@color/colorOnPrimary</item>
+    </style>
 </resources>

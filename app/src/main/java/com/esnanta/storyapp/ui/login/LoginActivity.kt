@@ -2,7 +2,6 @@ package com.esnanta.storyapp.ui.login
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -10,12 +9,9 @@ import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.appcompat.app.AlertDialog
-import com.esnanta.storyapp.R
 import com.esnanta.storyapp.data.source.remote.Result
 import com.esnanta.storyapp.databinding.ActivityLoginBinding
 import com.esnanta.storyapp.ui.base.BaseActivity
-import com.esnanta.storyapp.ui.main.MainActivity
 import com.esnanta.storyapp.utils.factory.UserViewModelFactory
 
 
@@ -37,9 +33,6 @@ class LoginActivity : BaseActivity() {
         setupAction()
         observeViewModel()
         playAnimation()
-
-        binding.emailEditText.setText("andromeda@tiga.com")
-        binding.passwordEditText.setText("12345678")
     }
 
     private fun setupView() {
@@ -91,21 +84,6 @@ class LoginActivity : BaseActivity() {
 
         viewModel.isLoading.observe(this) { isLoading ->
             binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
-        }
-    }
-
-    private fun showLoginSuccessDialog() {
-        AlertDialog.Builder(this).apply {
-            setTitle(getString(R.string.login_success_title))
-            setMessage(getString(R.string.login_success_message))
-            setPositiveButton(getString(R.string.login_success_positive_button)) { _, _ ->
-                val intent = Intent(context, MainActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                startActivity(intent)
-                finish()
-            }
-            create()
-            show()
         }
     }
 

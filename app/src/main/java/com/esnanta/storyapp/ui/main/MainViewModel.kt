@@ -19,22 +19,7 @@ class MainViewModel(private val repository: UserRepository) : ViewModel() {
         return repository.getSession().asLiveData()
     }
 
-    fun showLogoutConfirmationDialog(context: Context, onLogoutConfirmed: () -> Unit) {
-        AlertDialog.Builder(context)
-            .setTitle(R.string.logout_confirmation_title)
-            .setMessage(R.string.logout_confirmation_message)
-            .setPositiveButton(R.string.yes) { dialog, _ ->
-                logout()
-                onLogoutConfirmed()
-                dialog.dismiss()
-            }
-            .setNegativeButton(R.string.no) { dialog, _ ->
-                dialog.dismiss()
-            }
-            .show()
-    }
-
-    private fun logout() {
+    fun logout() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 repository.logout()

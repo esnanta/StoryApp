@@ -6,12 +6,14 @@ import android.provider.Settings
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.esnanta.storyapp.R
 import com.esnanta.storyapp.ui.login.LoginActivity
 import com.esnanta.storyapp.ui.main.MainActivity
 import com.esnanta.storyapp.ui.main.MainViewModel
+import com.esnanta.storyapp.ui.welcome.WelcomeActivity
 import com.esnanta.storyapp.utils.factory.UserViewModelFactory
 
 abstract class BaseActivity : AppCompatActivity() {
@@ -49,13 +51,14 @@ abstract class BaseActivity : AppCompatActivity() {
 
     private fun updateMenuItems(menu: Menu?) {
         menu?.let {
+            val homeMenuItem = it.findItem(R.id.action_home)
             val loginLogoutMenuItem = it.findItem(R.id.action_login_logout)
             if (isUserLoggedIn) {
                 loginLogoutMenuItem.icon = ContextCompat.getDrawable(this, R.drawable.ic_baseline_logout_24)
                 loginLogoutMenuItem.title = getString(R.string.menu_logout)
             } else {
-                loginLogoutMenuItem.icon = ContextCompat.getDrawable(this, R.drawable.ic_baseline_login_24)
-                loginLogoutMenuItem.title = getString(R.string.menu_login)
+                homeMenuItem.setVisible(false)
+                loginLogoutMenuItem.setVisible(false)
             }
         }
     }
@@ -72,9 +75,7 @@ abstract class BaseActivity : AppCompatActivity() {
             }
             R.id.action_login_logout -> {
                 if (isUserLoggedIn) {
-                    viewModel.showLogoutConfirmationDialog(this) {
-                        goHome()
-                    }
+                    showLogoutConfirmationDialog()
                 } else {
                     startActivity(Intent(this, LoginActivity::class.java))
                 }
@@ -93,5 +94,36 @@ abstract class BaseActivity : AppCompatActivity() {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(intent)
         finish()
+    }
+
+    fun showLogoutConfirmationDialog() {
+        AlertDialog.Builder(this, R.style.AlertDialogCustom)
+            .setTitle(R.string.logout_confirmation_title)
+            .setMessage(R.string.logout_confirmation_message)
+            .setPositiveButton(R.string.yes) { dialog, _ ->
+                viewModel.logout()
+                startActivity(Intent(this, WelcomeActivity::class.java))
+                finish()
+                dialog.dismiss()
+            }
+            .setNegativeButton(R.string.no) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
+    }
+
+    fun showLoginSuccessDialog() {
+        AlertDialog.Builder(this, R.style.AlertDialogCustom).apply {
+            setTitle(getString(R.string.login_success_title))
+            setMessage(getString(R.string.login_success_message))
+            setPositiveButton(getString(R.string.login_success_positive_button)) { _, _ ->
+                val intent = Intent(context, MainActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                startActivity(intent)
+                finish()
+            }
+            create()
+            show()
+        }
     }
 }
