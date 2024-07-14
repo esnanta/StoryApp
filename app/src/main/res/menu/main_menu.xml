@@ -7,6 +7,11 @@
         android:title="@string/menu_home"
         app:showAsAction="ifRoom" />
     <item
+        android:id="@+id/action_setting"
+        android:icon="@drawable/ic_baseline_settings_24"
+        android:title="@string/menu_setting"
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/action_login_logout"
         android:icon="@drawable/ic_baseline_login_24"
         android:title="@string/menu_login"

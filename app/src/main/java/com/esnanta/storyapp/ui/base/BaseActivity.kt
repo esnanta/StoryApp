@@ -2,6 +2,7 @@ package com.esnanta.storyapp.ui.base
 
 import android.content.Intent
 import android.os.Bundle
+import android.provider.Settings
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
@@ -63,6 +64,10 @@ abstract class BaseActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.action_home -> {
                 goHome()
+                true
+            }
+            R.id.action_setting -> {
+                startActivity(Intent(Settings.ACTION_LOCALE_SETTINGS))
                 true
             }
             R.id.action_login_logout -> {
