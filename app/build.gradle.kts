@@ -55,10 +55,11 @@ dependencies {
     implementation(libs.androidx.room.common)
     implementation(libs.androidx.datastore.preferences)
 
-    // animation splash and design
-    implementation (libs.lottie)
+    // ui and animation splash and
+    implementation(libs.lottie)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.androidx.swiperefreshlayout)
 
     // testing dependencies
     testImplementation(libs.junit)

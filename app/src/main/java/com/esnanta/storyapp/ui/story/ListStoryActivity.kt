@@ -30,6 +30,7 @@ class ListStoryActivity : BaseActivity() {
         }
 
         setupRecyclerView()
+        setupSwipeRefresh()
         observeViewModel()
     }
 
@@ -37,6 +38,12 @@ class ListStoryActivity : BaseActivity() {
         adapter = ListStoryAdapter(emptyList())
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.adapter = adapter
+    }
+
+    private fun setupSwipeRefresh() {
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            viewModel.fetchListStory()
+        }
     }
 
     private fun observeViewModel() {
@@ -47,16 +54,20 @@ class ListStoryActivity : BaseActivity() {
                 }
                 is Result.Success -> {
                     adapter.updateStories(result.data)
+                    binding.swipeRefreshLayout.isRefreshing = false
                 }
                 is Result.Error -> {
                     // Show error message
                     Toast.makeText(this, result.error, Toast.LENGTH_SHORT).show()
+                    binding.swipeRefreshLayout.isRefreshing = false
                 }
             }
         }
 
         viewModel.isLoading.observe(this) { isLoading ->
-            binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+            if (!binding.swipeRefreshLayout.isRefreshing) {
+                binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+            }
         }
 
         viewModel.dialogMessage.observe(this) { message ->
