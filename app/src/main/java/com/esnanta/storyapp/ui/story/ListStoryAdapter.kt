@@ -21,7 +21,7 @@ class ListStoryAdapter(private var stories: List<ListStoryItem>) :
     override fun onBindViewHolder(holder: StoryViewHolder, position: Int) {
         holder.bind(stories[position])
         holder.itemView.animation =
-            AnimationUtils.loadAnimation(holder.itemView.context, R.anim.motion_one)
+            AnimationUtils.loadAnimation(holder.itemView.context, R.anim.property_style_one)
     }
 
     override fun getItemCount(): Int = stories.size

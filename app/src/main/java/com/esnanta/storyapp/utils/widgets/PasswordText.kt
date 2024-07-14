@@ -38,10 +38,10 @@ class PasswordText @JvmOverloads constructor(
     }
 
     private fun checkPasswordLength(password: String) {
-        if (password.length < 8) {
-            error = "Password must be at least 8 characters"
+        error = if (password.length < 8) {
+            "Password must be at least 8 characters"
         } else {
-            error = null
+            null
         }
     }
 }

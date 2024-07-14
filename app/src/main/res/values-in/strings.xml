@@ -24,6 +24,11 @@
     <string name="unknown_error">Error tidak diketahui</string>
     <string name="empty_image_warning">Silakan masukkan berkas gambar terlebih dahulu.</string>
 
+    <string name="login_success_title">Sukses!</string>
+    <string name="login_success_message">Anda berhasil login. Sudah tidak sabar untuk belajar ya?</string>
+    <string name="login_success_positive_button">Lanjut</string>
+    <string name="registration_success_message">"%1$s. Akun dengan nama %2$s dan email %3$s sudah jadi nih. Yuk, login dan belajar coding."</string>
+
     <string name="desc_name">Masukkan nama</string>
     <string name="desc_email">Masukkan email</string>
     <string name="desc_password">Masukkan password</string>

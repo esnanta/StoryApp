@@ -9,6 +9,7 @@ import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
+import com.esnanta.storyapp.R
 import com.esnanta.storyapp.data.source.remote.Result
 import com.esnanta.storyapp.databinding.ActivitySignupBinding
 import com.esnanta.storyapp.ui.base.BaseActivity
@@ -66,7 +67,8 @@ class SignupActivity : BaseActivity() {
                 is Result.Success -> {
                     val name = binding.nameEditText.text.toString()
                     val email = binding.emailEditText.text.toString()
-                    viewModel.onRegistrationSuccess("${result.data.message}. Akun dengan nama $name dan email $email sudah jadi nih. Yuk, login dan belajar coding.")
+                    val successMessage = getString(R.string.registration_success_message, result.data.message, name, email)
+                    viewModel.onRegistrationSuccess(successMessage)
                 }
                 is Result.Error -> {
                     viewModel.onRegistrationError(result.error)
