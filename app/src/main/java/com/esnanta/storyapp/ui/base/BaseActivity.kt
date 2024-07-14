@@ -1,6 +1,7 @@
 package com.esnanta.storyapp.ui.base
 
 import android.content.Intent
+import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
@@ -8,11 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.esnanta.storyapp.R
 import com.esnanta.storyapp.ui.login.LoginActivity
-import com.esnanta.storyapp.utils.factory.StoryViewModelFactory
 import com.esnanta.storyapp.ui.main.MainActivity
 import com.esnanta.storyapp.ui.main.MainViewModel
-import com.esnanta.storyapp.ui.story.ListStoryViewModel
-import com.esnanta.storyapp.ui.welcome.WelcomeActivity
 import com.esnanta.storyapp.utils.factory.UserViewModelFactory
 
 abstract class BaseActivity : AppCompatActivity() {
@@ -23,16 +21,32 @@ abstract class BaseActivity : AppCompatActivity() {
 
     private var isUserLoggedIn = false
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setupObserver()
+    }
+
+    private fun setupObserver() {
+        viewModel.getSession().observe(this) { user ->
+            if (isUserLoggedIn != user.isLogin) {
+                isUserLoggedIn = user.isLogin
+                invalidateOptionsMenu() // Request to refresh the menu
+            }
+        }
+    }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
+        updateMenuItems(menu)
+        return true
+    }
 
-        // Observe the session status
-        viewModel.getSession().observe(this) { user ->
-            isUserLoggedIn = user.isLogin
-            invalidateOptionsMenu() // Request to refresh the menu
-        }
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        updateMenuItems(menu)
+        return super.onPrepareOptionsMenu(menu)
+    }
 
-        // Update the menu items based on the login status
+    private fun updateMenuItems(menu: Menu?) {
         menu?.let {
             val loginLogoutMenuItem = it.findItem(R.id.action_login_logout)
             if (isUserLoggedIn) {
@@ -43,7 +57,6 @@ abstract class BaseActivity : AppCompatActivity() {
                 loginLogoutMenuItem.title = getString(R.string.menu_login)
             }
         }
-        return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -70,7 +83,7 @@ abstract class BaseActivity : AppCompatActivity() {
         }
     }
 
-    private fun goHome(){
+    private fun goHome() {
         val intent = Intent(this, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(intent)
