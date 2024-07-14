@@ -21,28 +21,30 @@ class AddStoryViewModel(private val repository: UploadRepository) : ViewModel() 
     val isLoading: LiveData<Boolean> = _isLoading
 
     private val _dialogMessage = MutableLiveData<String?>()
-    val dialogMessage: LiveData<String?> = _dialogMessage
+    val dialogMessage: LiveData<String?> get() = _dialogMessage
 
     fun uploadImage(file: File, description: String) {
         viewModelScope.launch {
             _isLoading.value = true
             _uploadResult.postValue(Result.Loading)
-            repository.uploadImage(file, description).observeForever { result ->
-                when (result) {
-                    is Result.Success -> {
-                        _uploadResult.postValue(Result.Success(result.data))
-                        _dialogMessage.postValue(result.data.message)
+            withContext(Dispatchers.IO) {
+                repository.uploadImage(file, description).observeForever { result ->
+                    when (result) {
+                        is Result.Success -> {
+                            _uploadResult.postValue(Result.Success(result.data as AddStoryResponse))
+                            _dialogMessage.postValue(result.data.message)
+                        }
+                        is Result.Error -> {
+                            _uploadResult.postValue(Result.Error(result.error))
+                            _dialogMessage.postValue(result.error)
+                        }
+                        else -> {
+                            _uploadResult.postValue(Result.Error("Unknown error"))
+                            _dialogMessage.postValue("Unknown error")
+                        }
                     }
-                    is Result.Error -> {
-                        _uploadResult.postValue(Result.Error(result.error))
-                        _dialogMessage.postValue(result.error)
-                    }
-                    else -> {
-                        _uploadResult.postValue(Result.Error("Unknown error"))
-                        _dialogMessage.postValue("Unknown error")
-                    }
+                    _isLoading.postValue(false)
                 }
-                _isLoading.value = false
             }
         }
     }

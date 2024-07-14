@@ -20,20 +20,19 @@ class DetailStoryViewModel(private val repository: StoryRepository) : ViewModel(
     val isLoading: LiveData<Boolean> = _isLoading
 
     private val _dialogMessage = MutableLiveData<String?>()
-    val dialogMessage: LiveData<String?> = _dialogMessage
+    val dialogMessage: LiveData<String?> get() = _dialogMessage
 
     fun fetchStoryDetail(id: String) {
         viewModelScope.launch {
             _isLoading.value = true
-            val result = withContext(Dispatchers.IO) {
-                repository.getStoryDetail(id)
+            withContext(Dispatchers.IO) {
+                when (val result = repository.getStoryDetail(id)) {
+                    is Result.Loading -> _storyDetail.postValue(Result.Loading)
+                    is Result.Success -> _storyDetail.postValue(Result.Success(result.data))
+                    is Result.Error -> _storyDetail.postValue(Result.Error(result.error))
+                }
+                _isLoading.postValue(false)
             }
-            when (result) {
-                is Result.Loading -> _storyDetail.postValue(Result.Loading)
-                is Result.Success -> _storyDetail.postValue(Result.Success(result.data))
-                is Result.Error -> _storyDetail.postValue(Result.Error(result.error))
-            }
-            _isLoading.value = false
         }
     }
 
