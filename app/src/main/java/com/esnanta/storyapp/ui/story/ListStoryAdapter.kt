@@ -3,8 +3,10 @@ package com.esnanta.storyapp.ui.story
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.esnanta.storyapp.R
 import com.esnanta.storyapp.data.source.remote.response.ListStoryItem
 import com.esnanta.storyapp.databinding.ItemStoryBinding
 
@@ -18,6 +20,8 @@ class ListStoryAdapter(private var stories: List<ListStoryItem>) :
 
     override fun onBindViewHolder(holder: StoryViewHolder, position: Int) {
         holder.bind(stories[position])
+        holder.itemView.animation =
+            AnimationUtils.loadAnimation(holder.itemView.context, R.anim.motion_one)
     }
 
     override fun getItemCount(): Int = stories.size
