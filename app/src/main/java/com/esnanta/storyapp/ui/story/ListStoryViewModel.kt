@@ -7,7 +7,9 @@ import androidx.lifecycle.viewModelScope
 import com.esnanta.storyapp.data.repository.StoryRepository
 import com.esnanta.storyapp.data.source.remote.Result
 import com.esnanta.storyapp.data.source.remote.response.ListStoryItem
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class ListStoryViewModel(private val repository: StoryRepository) : ViewModel() {
 
@@ -23,7 +25,10 @@ class ListStoryViewModel(private val repository: StoryRepository) : ViewModel() 
     fun fetchListStory() {
         viewModelScope.launch {
             _isLoading.value = true
-            when (val result = repository.getListStory()) {
+            val result = withContext(Dispatchers.IO) {
+                repository.getListStory()
+            }
+            when (result) {
                 is Result.Loading -> _listStory.postValue(Result.Loading)
                 is Result.Success -> _listStory.postValue(Result.Success(result.data.listStory))
                 is Result.Error -> _listStory.postValue(Result.Error(result.error))

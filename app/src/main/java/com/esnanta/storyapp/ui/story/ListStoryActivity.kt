@@ -40,15 +40,13 @@ class ListStoryActivity : BaseActivity() {
     }
 
     private fun observeViewModel() {
-
         viewModel.listStory.observe(this) { result ->
             when (result) {
                 is Result.Loading -> {
                     // Handled by isLoading LiveData
                 }
                 is Result.Success -> {
-                    adapter = ListStoryAdapter(result.data)
-                    binding.recyclerView.adapter = adapter
+                    adapter.updateStories(result.data)
                 }
                 is Result.Error -> {
                     // Show error message

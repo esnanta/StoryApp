@@ -7,7 +7,9 @@ import androidx.lifecycle.viewModelScope
 import com.esnanta.storyapp.data.repository.StoryRepository
 import com.esnanta.storyapp.data.source.remote.Result
 import com.esnanta.storyapp.data.source.remote.response.DetailStoryResponse
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class DetailStoryViewModel(private val repository: StoryRepository) : ViewModel() {
 
@@ -23,7 +25,10 @@ class DetailStoryViewModel(private val repository: StoryRepository) : ViewModel(
     fun fetchStoryDetail(id: String) {
         viewModelScope.launch {
             _isLoading.value = true
-            when (val result = repository.getStoryDetail(id)) {
+            val result = withContext(Dispatchers.IO) {
+                repository.getStoryDetail(id)
+            }
+            when (result) {
                 is Result.Loading -> _storyDetail.postValue(Result.Loading)
                 is Result.Success -> _storyDetail.postValue(Result.Success(result.data))
                 is Result.Error -> _storyDetail.postValue(Result.Error(result.error))

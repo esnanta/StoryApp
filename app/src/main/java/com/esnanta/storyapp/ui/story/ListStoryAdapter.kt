@@ -8,7 +8,7 @@ import com.bumptech.glide.Glide
 import com.esnanta.storyapp.data.source.remote.response.ListStoryItem
 import com.esnanta.storyapp.databinding.ItemStoryBinding
 
-class ListStoryAdapter(private val stories: List<ListStoryItem>) :
+class ListStoryAdapter(private var stories: List<ListStoryItem>) :
     RecyclerView.Adapter<ListStoryAdapter.StoryViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StoryViewHolder {
@@ -21,6 +21,11 @@ class ListStoryAdapter(private val stories: List<ListStoryItem>) :
     }
 
     override fun getItemCount(): Int = stories.size
+
+    fun updateStories(newStories: List<ListStoryItem>) {
+        this.stories = newStories
+        notifyDataSetChanged()
+    }
 
     inner class StoryViewHolder(private val binding: ItemStoryBinding) : RecyclerView.ViewHolder(binding.root) {
 

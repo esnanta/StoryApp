@@ -7,7 +7,9 @@ import androidx.lifecycle.viewModelScope
 import com.esnanta.storyapp.data.repository.UploadRepository
 import com.esnanta.storyapp.data.source.remote.Result
 import com.esnanta.storyapp.data.source.remote.response.AddStoryResponse
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 
 class AddStoryViewModel(private val repository: UploadRepository) : ViewModel() {
