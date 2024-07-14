@@ -27,24 +27,21 @@ class AddStoryViewModel(private val repository: UploadRepository) : ViewModel() 
         viewModelScope.launch {
             _isLoading.value = true
             _uploadResult.postValue(Result.Loading)
-            withContext(Dispatchers.IO) {
-                repository.uploadImage(file, description).observeForever { result ->
-                    when (result) {
-                        is Result.Success -> {
-                            _uploadResult.postValue(Result.Success(result.data as AddStoryResponse))
-                            _dialogMessage.postValue(result.data.message)
-                        }
-                        is Result.Error -> {
-                            _uploadResult.postValue(Result.Error(result.error))
-                            _dialogMessage.postValue(result.error)
-                        }
-                        else -> {
-                            _uploadResult.postValue(Result.Error("Unknown error"))
-                            _dialogMessage.postValue("Unknown error")
-                        }
-                    }
-                    _isLoading.postValue(false)
+            try {
+                val result = withContext(Dispatchers.IO) {
+                    repository.uploadImage(file, description)
                 }
+                _uploadResult.postValue(result)
+                if (result is Result.Success) {
+                    _dialogMessage.postValue(result.data.message)
+                } else if (result is Result.Error) {
+                    _dialogMessage.postValue(result.error)
+                }
+            } catch (e: Exception) {
+                _uploadResult.postValue(Result.Error(e.message ?: "Unknown error"))
+                _dialogMessage.postValue(e.message ?: "Unknown error")
+            } finally {
+                _isLoading.postValue(false)
             }
         }
     }

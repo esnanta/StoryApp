@@ -1,6 +1,7 @@
 package com.esnanta.storyapp.ui.story
 
 import android.Manifest
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -113,6 +114,7 @@ class AddStoryActivity : BaseActivity() {
                 is Result.Success -> {
                     showToast(result.data.message ?: getString(R.string.upload_success))
                     viewModel.clearDialogMessage()
+                    navigateToListStory()
                 }
                 is Result.Error -> {
                     showToast(result.error)
@@ -135,6 +137,13 @@ class AddStoryActivity : BaseActivity() {
 
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun navigateToListStory() {
+        val intent = Intent(this, ListStoryActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(intent)
+        finish()
     }
 
     companion object {

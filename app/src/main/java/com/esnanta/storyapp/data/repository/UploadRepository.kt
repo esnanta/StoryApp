@@ -1,5 +1,6 @@
 package com.esnanta.storyapp.data.repository
 
+import android.util.Log
 import androidx.lifecycle.liveData
 import com.esnanta.storyapp.data.source.local.UserPreference
 import java.io.File
@@ -18,22 +19,23 @@ class UploadRepository private constructor(
     private val apiService: ApiService
 ) {
 
-    fun uploadImage(imageFile: File, description: String) = liveData {
-        emit(Result.Loading)
-        val requestBody = description.toRequestBody("text/plain".toMediaType())
-        val requestImageFile = imageFile.asRequestBody("image/jpeg".toMediaType())
-        val multipartBody = MultipartBody.Part.createFormData(
-            "photo",
-            imageFile.name,
-            requestImageFile
-        )
-        try {
+    suspend fun uploadImage(imageFile: File, description: String): Result<AddStoryResponse> {
+        return try {
+            val requestBody = description.toRequestBody("text/plain".toMediaType())
+            val requestImageFile = imageFile.asRequestBody("image/jpeg".toMediaType())
+            val multipartBody = MultipartBody.Part.createFormData(
+                "photo",
+                imageFile.name,
+                requestImageFile
+            )
             val successResponse = apiService.addStory(multipartBody, requestBody)
-            emit(Result.Success(successResponse))
+            Result.Success(successResponse)
         } catch (e: HttpException) {
             val errorBody = e.response()?.errorBody()?.string()
             val errorResponse = Gson().fromJson(errorBody, AddStoryResponse::class.java)
-            emit(errorResponse.message?.let { Result.Error(it) })
+            Result.Error(errorResponse.message ?: "Unknown error")
+        } catch (e: Exception) {
+            Result.Error(e.message ?: "Unknown error")
         }
     }
 
