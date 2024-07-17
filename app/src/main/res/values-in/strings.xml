@@ -23,6 +23,7 @@
     <string name="upload_success">Gambar berhasil diunggah</string>
     <string name="unknown_error">Error tidak diketahui</string>
     <string name="empty_image_warning">Silakan masukkan berkas gambar terlebih dahulu.</string>
+    <string name="please_fill_all_fields">Mohon isi semua field.</string>
 
     <string name="login_success_title">Sukses!</string>
     <string name="login_success_message">Anda berhasil login. Sudah tidak sabar untuk belajar ya?</string>

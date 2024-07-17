@@ -9,6 +9,7 @@ import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.viewModels
+import com.esnanta.storyapp.R
 import com.esnanta.storyapp.data.source.remote.Result
 import com.esnanta.storyapp.databinding.ActivityLoginBinding
 import com.esnanta.storyapp.ui.base.BaseActivity
@@ -56,7 +57,7 @@ class LoginActivity : BaseActivity() {
             if (email.isNotEmpty() && password.isNotEmpty()) {
                 viewModel.login(email, password)
             } else {
-                Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.please_fill_all_fields), Toast.LENGTH_SHORT).show()
             }
         }
     }

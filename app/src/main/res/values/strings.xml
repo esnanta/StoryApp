@@ -22,6 +22,7 @@
     <string name="upload_success">Image uploaded</string>
     <string name="unknown_error">Unknown error</string>
     <string name="empty_image_warning">Please select an image file first.</string>
+    <string name="please_fill_all_fields">Please fill all fields.</string>
 
     <string name="login_success_title">Success!</string>
     <string name="login_success_message">You have successfully logged in. Excited to start learning?</string>
