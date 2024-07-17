@@ -13,6 +13,14 @@ class UserRepository private constructor(
     private val apiService: ApiService
 ) : IRepository {
 
+    override fun getSession(): Flow<UserModel> {
+        return userPreference.getSession()
+    }
+
+    override suspend fun logout() {
+        userPreference.logout()
+    }
+
     suspend fun saveSession(user: UserModel) {
         userPreference.saveSession(user)
     }
@@ -39,14 +47,6 @@ class UserRepository private constructor(
         } catch (e: Exception) {
             Result.Error(e.localizedMessage ?: "An unknown error occurred")
         }
-    }
-
-    fun getSession(): Flow<UserModel> {
-        return userPreference.getSession()
-    }
-
-    suspend fun logout() {
-        userPreference.logout()
     }
 
     companion object {

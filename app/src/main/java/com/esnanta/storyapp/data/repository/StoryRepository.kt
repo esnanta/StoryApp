@@ -1,5 +1,6 @@
 package com.esnanta.storyapp.data.repository
 
+import com.esnanta.storyapp.data.model.UserModel
 import com.esnanta.storyapp.data.source.local.UserPreference
 import com.esnanta.storyapp.data.source.remote.Result
 import com.esnanta.storyapp.data.source.remote.api.ApiService
@@ -7,6 +8,7 @@ import com.esnanta.storyapp.data.source.remote.response.AddStoryResponse
 import com.esnanta.storyapp.data.source.remote.response.DetailStoryResponse
 import com.esnanta.storyapp.data.source.remote.response.ListStoryResponse
 import com.google.gson.Gson
+import kotlinx.coroutines.flow.Flow
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -18,6 +20,14 @@ class StoryRepository private constructor(
     private val userPreference: UserPreference,
     private val apiService: ApiService
 ) : IRepository {
+
+    override fun getSession(): Flow<UserModel> {
+        return userPreference.getSession()
+    }
+
+    override suspend fun logout() {
+        userPreference.logout()
+    }
 
     suspend fun getListStory(): Result<ListStoryResponse> {
         return try {
@@ -35,10 +45,6 @@ class StoryRepository private constructor(
         } catch (e: Exception) {
             Result.Error(e.message.toString())
         }
-    }
-
-    suspend fun logout() {
-        userPreference.logout()
     }
 
     suspend fun uploadImage(imageFile: File, description: String): Result<AddStoryResponse> {
