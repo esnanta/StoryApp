@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.esnanta.storyapp.data.repository.UploadRepository
+import com.esnanta.storyapp.data.repository.StoryRepository
 import com.esnanta.storyapp.data.source.remote.Result
 import com.esnanta.storyapp.data.source.remote.response.AddStoryResponse
 import kotlinx.coroutines.Dispatchers
@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 
-class AddStoryViewModel(private val repository: UploadRepository) : ViewModel() {
+class AddStoryViewModel(private val repository: StoryRepository) : ViewModel() {
 
     private val _uploadResult = MutableLiveData<Result<AddStoryResponse>>()
     val uploadResult: LiveData<Result<AddStoryResponse>> get() = _uploadResult

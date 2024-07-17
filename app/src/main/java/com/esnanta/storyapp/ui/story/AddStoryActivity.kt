@@ -14,7 +14,7 @@ import com.esnanta.storyapp.R
 import com.esnanta.storyapp.data.source.remote.Result
 import com.esnanta.storyapp.databinding.ActivityAddStoryBinding
 import com.esnanta.storyapp.ui.base.BaseActivity
-import com.esnanta.storyapp.utils.factory.AddStoryViewModelFactory
+import com.esnanta.storyapp.utils.factory.StoryViewModelFactory
 import com.esnanta.storyapp.utils.widgets.getImageUri
 import com.esnanta.storyapp.utils.widgets.reduceFileImage
 import com.esnanta.storyapp.utils.widgets.uriToFile
@@ -22,7 +22,7 @@ import com.esnanta.storyapp.utils.widgets.uriToFile
 class AddStoryActivity : BaseActivity() {
 
     private val viewModel by viewModels<AddStoryViewModel> {
-        AddStoryViewModelFactory.getInstance(this)
+        StoryViewModelFactory.getInstance(this)
     }
 
     private lateinit var binding: ActivityAddStoryBinding
