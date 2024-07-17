@@ -3,6 +3,7 @@ package com.esnanta.storyapp.ui.story
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.viewModels
 import com.bumptech.glide.Glide
@@ -52,9 +53,12 @@ class DetailStoryActivity : BaseActivity() {
                     binding.tvDescription.text = story?.description
                     binding.tvCreatedAt.text = story?.createdAt
 
-                    Glide.with(this)
-                        .load(story?.photoUrl)
-                        .into(binding.ivPhoto)
+                    story?.photoUrl?.let {
+                        binding.ivPhoto.loadImage(
+                            url = it
+                        )
+                    }
+
                 }
                 is Result.Error -> {
                     // Show error message
@@ -69,6 +73,13 @@ class DetailStoryActivity : BaseActivity() {
                 viewModel.clearDialogMessage()
             }
         }
+    }
+
+    fun ImageView.loadImage(url: String) {
+        Glide.with(this.context)
+            .load(url)
+            .centerCrop()
+            .into(this)
     }
 
     companion object {

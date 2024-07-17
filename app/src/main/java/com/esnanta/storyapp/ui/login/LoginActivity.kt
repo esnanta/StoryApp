@@ -34,6 +34,9 @@ class LoginActivity : BaseActivity() {
         setupAction()
         observeViewModel()
         playAnimation()
+
+        binding.emailEditText.setText(getString(R.string.testing_email))
+        binding.passwordEditText.setText(getString(R.string.testing_password))
     }
 
     private fun setupView() {
