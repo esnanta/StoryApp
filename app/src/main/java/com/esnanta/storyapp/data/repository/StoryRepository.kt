@@ -4,7 +4,7 @@ import com.esnanta.storyapp.data.model.UserModel
 import com.esnanta.storyapp.data.source.local.UserPreference
 import com.esnanta.storyapp.data.source.remote.Result
 import com.esnanta.storyapp.data.source.remote.api.ApiService
-import com.esnanta.storyapp.data.source.remote.response.AddStoryResponse
+import com.esnanta.storyapp.data.source.remote.response.StoryResponse
 import com.esnanta.storyapp.data.source.remote.response.DetailStoryResponse
 import com.esnanta.storyapp.data.source.remote.response.ListStoryResponse
 import com.google.gson.Gson
@@ -47,7 +47,7 @@ class StoryRepository private constructor(
         }
     }
 
-    suspend fun uploadImage(imageFile: File, description: String): Result<AddStoryResponse> {
+    suspend fun uploadImage(imageFile: File, description: String): Result<StoryResponse> {
         return try {
             val requestBody = description.toRequestBody("text/plain".toMediaType())
             val requestImageFile = imageFile.asRequestBody("image/jpeg".toMediaType())
@@ -60,7 +60,7 @@ class StoryRepository private constructor(
             Result.Success(successResponse)
         } catch (e: HttpException) {
             val errorBody = e.response()?.errorBody()?.string()
-            val errorResponse = Gson().fromJson(errorBody, AddStoryResponse::class.java)
+            val errorResponse = Gson().fromJson(errorBody, StoryResponse::class.java)
             Result.Error(errorResponse.message ?: "Unknown error")
         } catch (e: Exception) {
             Result.Error(e.message ?: "Unknown error")

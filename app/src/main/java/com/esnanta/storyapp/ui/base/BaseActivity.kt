@@ -13,6 +13,7 @@ import com.esnanta.storyapp.R
 import com.esnanta.storyapp.ui.login.LoginActivity
 import com.esnanta.storyapp.ui.main.MainActivity
 import com.esnanta.storyapp.ui.main.MainViewModel
+import com.esnanta.storyapp.ui.story.StoryMapActivity
 import com.esnanta.storyapp.ui.welcome.WelcomeActivity
 import com.esnanta.storyapp.utils.factory.UserViewModelFactory
 
@@ -53,12 +54,16 @@ abstract class BaseActivity : AppCompatActivity() {
         menu?.let {
             val homeMenuItem = it.findItem(R.id.action_home)
             val loginLogoutMenuItem = it.findItem(R.id.action_login_logout)
+            val mapMenuItem = it.findItem(R.id.action_map)
+
             if (isUserLoggedIn) {
                 loginLogoutMenuItem.icon = ContextCompat.getDrawable(this, R.drawable.ic_baseline_logout_24)
                 loginLogoutMenuItem.title = getString(R.string.menu_logout)
+                mapMenuItem.title = getString(R.string.menu_map)
             } else {
                 homeMenuItem.setVisible(false)
                 loginLogoutMenuItem.setVisible(false)
+                mapMenuItem.setVisible(false)
             }
         }
     }
@@ -66,7 +71,16 @@ abstract class BaseActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_home -> {
-                goHome()
+                val intent = Intent(this, MainActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
+                finish()
+                true
+            }
+            R.id.action_map -> {
+                val intent = Intent(this, StoryMapActivity::class.java)
+                startActivity(intent)
+                finish()
                 true
             }
             R.id.action_setting -> {
@@ -87,13 +101,6 @@ abstract class BaseActivity : AppCompatActivity() {
             }
             else -> super.onOptionsItemSelected(item)
         }
-    }
-
-    private fun goHome() {
-        val intent = Intent(this, MainActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-        startActivity(intent)
-        finish()
     }
 
     fun showLogoutConfirmationDialog() {

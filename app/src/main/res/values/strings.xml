@@ -38,6 +38,7 @@
 
     <string name="menu_home">Home</string>
     <string name="menu_setting">Setting</string>
+    <string name="menu_map">Map</string>
     <string name="menu_login">Login</string>
     <string name="menu_logout">Logout</string>
     <string name="logout_confirmation_title">Logout Confirmation</string>
