@@ -67,6 +67,15 @@ class StoryRepository private constructor(
         }
     }
 
+    suspend fun getStoriesWithLocation(): Result<StoryResponse> {
+        return try {
+            val response = apiService.getStoriesWithLocation()
+            Result.Success(response)
+        } catch (e: Exception) {
+            Result.Error(e.message.toString())
+        }
+    }
+
     companion object {
         @Volatile
         private var instance: StoryRepository? = null

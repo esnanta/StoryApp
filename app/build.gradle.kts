@@ -61,7 +61,6 @@ dependencies {
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.androidx.swiperefreshlayout)
-    implementation(libs.play.services.maps)
 
     // testing dependencies
     testImplementation(libs.junit)
@@ -89,6 +88,6 @@ dependencies {
     implementation (libs.okhttp3.logging.interceptor)
 
     // map dependencies
-    implementation(libs.play.services.maps.v1802)
+    implementation(libs.play.services.maps)
     implementation(libs.play.services.location)
 }
