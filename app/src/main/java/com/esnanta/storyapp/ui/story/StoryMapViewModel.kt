@@ -17,10 +17,11 @@ class StoryMapViewModel(private val storyRepository: StoryRepository) : ViewMode
     val storiesWithLocation: LiveData<Result<StoryResponse>> = _storiesWithLocation
 
     fun fetchStoriesWithLocation() {
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                _storiesWithLocation.value = Result.Loading
-                _storiesWithLocation.value = storyRepository.getStoriesWithLocation()
+        _storiesWithLocation.value = Result.Loading
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = storyRepository.getStoriesWithLocation()
+            withContext(Dispatchers.Main) {
+                _storiesWithLocation.value = result
             }
         }
     }
