@@ -3,9 +3,11 @@ package com.esnanta.storyapp.ui.story
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import com.esnanta.storyapp.R
 import com.esnanta.storyapp.data.source.remote.Result
@@ -48,7 +50,6 @@ class StoryMapActivity : BaseActivity(), OnMapReadyCallback {
         setContentView(binding.root)
 
         setSupportActionBar(binding.toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         setupObserver()
 
@@ -81,16 +82,13 @@ class StoryMapActivity : BaseActivity(), OnMapReadyCallback {
         viewModel.storiesWithLocation.observe(this) { result ->
             when (result) {
                 is Result.Loading -> {
-                    // Show loading indicator if needed
+                    // Handled by observer
                     Log.d("StoryMapActivity", "Loading stories with location...")
                 }
                 is Result.Success -> {
                     Log.d("StoryMapActivity", "Successfully loaded stories with location.")
                     result.data?.let {
                         addMarkers(it.listStory)
-                    } ?: run {
-                        Log.e("StoryMapActivity", "Success result data is null")
-                        addMarkers(emptyList()) // Handle the null case by passing an empty list
                     }
                 }
                 is Result.Error -> {
@@ -99,14 +97,30 @@ class StoryMapActivity : BaseActivity(), OnMapReadyCallback {
                 }
             }
         }
+
+        viewModel.isLoading.observe(this) { isLoading ->
+            binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+        }
+
+        viewModel.dialogMessage.observe(this) { message ->
+            message?.let {
+                showDialog(message)
+                viewModel.clearDialogMessage()
+            }
+        }
+
     }
 
     private fun addMarkers(stories: List<Story>?) {
+
+
         if (stories.isNullOrEmpty()) {
             // If stories list is empty, move camera to the default location
+            Log.d("StoryMapActivity", "No stories found. Moving camera to default location.")
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLatLng, defaultZoomLevel))
         } else {
             // Add markers and move camera to the first story's location
+            Log.d("StoryMapActivity", "Adding markers for ${stories.size} stories.")
             stories.forEach { story ->
                 Log.d("StoryMapActivity", "Adding marker for story: $story")
                 val lat = story.lat
@@ -127,5 +141,12 @@ class StoryMapActivity : BaseActivity(), OnMapReadyCallback {
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(firstLocation, 10f))
             }
         }
+    }
+
+    private fun showDialog(message: String) {
+        AlertDialog.Builder(this)
+            .setMessage(message)
+            .setPositiveButton(android.R.string.ok, null)
+            .show()
     }
 }
