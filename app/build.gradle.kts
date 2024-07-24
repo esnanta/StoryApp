@@ -63,6 +63,7 @@ dependencies {
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.androidx.swiperefreshlayout)
     implementation(libs.androidx.media3.common)
+    implementation(libs.androidx.paging.runtime.ktx)
 
     // testing dependencies
     testImplementation(libs.junit)
