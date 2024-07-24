@@ -11,16 +11,12 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import com.esnanta.storyapp.R
 import com.esnanta.storyapp.data.source.remote.Result
-import com.esnanta.storyapp.data.source.remote.response.Story
 import com.esnanta.storyapp.databinding.ActivityStoryMapBinding
 import com.esnanta.storyapp.ui.base.BaseActivity
 import com.esnanta.storyapp.utils.factory.StoryViewModelFactory
-import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
 
 class StoryMapActivity : BaseActivity(), OnMapReadyCallback {
 
@@ -38,10 +34,6 @@ class StoryMapActivity : BaseActivity(), OnMapReadyCallback {
                 getMyLocation()
             }
         }
-
-    // Define the default camera position and zoom level
-    private val defaultLatLng = LatLng(-6.200000, 106.816666) // Jakarta, Indonesia
-    private val defaultZoomLevel = 10f
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,7 +80,7 @@ class StoryMapActivity : BaseActivity(), OnMapReadyCallback {
                 is Result.Success -> {
                     Log.d("StoryMapActivity", "Successfully loaded stories with location.")
                     result.data?.let {
-                        addMarkers(it.listStory)
+                        viewModel.addMarkers(it.listStory, mMap)
                     }
                 }
                 is Result.Error -> {
@@ -106,39 +98,6 @@ class StoryMapActivity : BaseActivity(), OnMapReadyCallback {
             message?.let {
                 showDialog(message)
                 viewModel.clearDialogMessage()
-            }
-        }
-
-    }
-
-    private fun addMarkers(stories: List<Story>?) {
-
-
-        if (stories.isNullOrEmpty()) {
-            // If stories list is empty, move camera to the default location
-            Log.d("StoryMapActivity", "No stories found. Moving camera to default location.")
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLatLng, defaultZoomLevel))
-        } else {
-            // Add markers and move camera to the first story's location
-            Log.d("StoryMapActivity", "Adding markers for ${stories.size} stories.")
-            stories.forEach { story ->
-                Log.d("StoryMapActivity", "Adding marker for story: $story")
-                val lat = story.lat
-                val lon = story.lon
-                if (lat != null && lon != null) {
-                    val latLng = LatLng(lat, lon)
-                    mMap.addMarker(
-                        MarkerOptions()
-                            .position(latLng)
-                            .title(story.name)
-                            .snippet(story.description)
-                    )
-                }
-            }
-            // Move the camera to the first story's location
-            stories.firstOrNull { it.lat != null && it.lon != null }?.let { story ->
-                val firstLocation = LatLng(story.lat!!, story.lon!!)
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(firstLocation, 10f))
             }
         }
     }

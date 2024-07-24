@@ -3,6 +3,7 @@ activityKtx = "1.9.0"
 agp = "8.5.1"
 converterGson = "2.11.0"
 datastorePreferences = "1.1.1"
+fragment = "1.8.1"
 glide = "4.16.0"
 kotlin = "1.9.10"
 coreKtx = "1.13.1"
@@ -33,6 +34,7 @@ media3Common = "1.3.1"
 androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activityKtx" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
+androidx-fragment = { module = "androidx.fragment:fragment", version.ref = "fragment" }
 androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
 androidx-room-ktx = { module = "androidx.room:room-ktx" }
 androidx-room-runtime = { module = "androidx.room:room-runtime" }
