@@ -36,6 +36,12 @@ interface ApiService {
     @GET("stories")
     suspend fun getListStory(): ListStoryResponse
 
+    @GET("stories")
+    suspend fun getListStoryWithPage(
+        @Query("page") page: Int = 1,
+        @Query("size") size: Int = 20
+    ): ListStoryResponse
+
     @GET("stories/{id}")
     suspend fun getStoryDetail(@Path("id") id: String): DetailStoryResponse
 
@@ -53,9 +59,4 @@ interface ApiService {
         @Query("location") location : Int = 1,
     ): StoryResponse
 
-    @GET("stories")
-    suspend fun getStories(
-        @Query("page") page: Int = 1,
-        @Query("size") size: Int = 20
-    ): StoryResponse
 }

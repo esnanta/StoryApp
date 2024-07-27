@@ -4,15 +4,15 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import androidx.recyclerview.widget.DiffUtil
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.esnanta.storyapp.R
 import com.esnanta.storyapp.data.source.remote.response.ListStoryItem
 import com.esnanta.storyapp.databinding.ItemStoryBinding
 
-class ListStoryAdapter(private var stories: List<ListStoryItem>) :
-    RecyclerView.Adapter<ListStoryAdapter.StoryViewHolder>() {
+class ListStoryAdapter :
+    PagingDataAdapter<ListStoryItem, ListStoryAdapter.StoryViewHolder>(StoryDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StoryViewHolder {
         val binding = ItemStoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -20,19 +20,12 @@ class ListStoryAdapter(private var stories: List<ListStoryItem>) :
     }
 
     override fun onBindViewHolder(holder: StoryViewHolder, position: Int) {
-        holder.bind(stories[position])
-        holder.itemView.animation =
-            AnimationUtils.loadAnimation(holder.itemView.context, R.anim.property_style_one)
-    }
-
-    override fun getItemCount(): Int = stories.size
-
-    fun updateStories(newStories: List<ListStoryItem>) {
-        val diffCallback = StoryDiffCallback(stories, newStories)
-        val diffResult = DiffUtil.calculateDiff(diffCallback)
-
-        this.stories = newStories
-        diffResult.dispatchUpdatesTo(this)
+        val story = getItem(position)
+        if (story != null) {
+            holder.bind(story)
+            holder.itemView.animation =
+                AnimationUtils.loadAnimation(holder.itemView.context, R.anim.property_style_one)
+        }
     }
 
     inner class StoryViewHolder(private val binding: ItemStoryBinding) :

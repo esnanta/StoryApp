@@ -58,6 +58,7 @@ dependencies {
 
     // ui and animation splash and
     implementation(libs.lottie)
+    implementation(libs.androidx.activity.ktx)
     implementation(libs.androidx.fragment)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
@@ -70,10 +71,11 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    // liveData and viewModel dependencies.
+    // liveData, viewModel, coroutines dependencies.
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.lifecycle.livedata.ktx)
-    implementation(libs.androidx.activity.ktx)
+    implementation(libs.jetbrains.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.android)
 
     // Room dependency
     ksp(libs.room.compiler)

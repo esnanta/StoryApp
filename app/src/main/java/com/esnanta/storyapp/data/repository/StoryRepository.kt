@@ -1,12 +1,16 @@
 package com.esnanta.storyapp.data.repository
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.esnanta.storyapp.data.model.UserModel
 import com.esnanta.storyapp.data.source.local.UserPreference
 import com.esnanta.storyapp.data.source.remote.Result
 import com.esnanta.storyapp.data.source.remote.api.ApiService
 import com.esnanta.storyapp.data.source.remote.response.StoryResponse
 import com.esnanta.storyapp.data.source.remote.response.DetailStoryResponse
-import com.esnanta.storyapp.data.source.remote.response.ListStoryResponse
+import com.esnanta.storyapp.data.source.remote.response.ListStoryItem
+import com.esnanta.storyapp.ui.story.ListStoryPagingSource
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
 import okhttp3.MediaType.Companion.toMediaType
@@ -29,14 +33,24 @@ class StoryRepository private constructor(
         userPreference.logout()
     }
 
-    suspend fun getListStory(): Result<ListStoryResponse> {
-        return try {
-            val response = apiService.getListStory()
-            Result.Success(response)
-        } catch (e: Exception) {
-            Result.Error(e.message.toString())
-        }
+    fun getListStory(): Flow<PagingData<ListStoryItem>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 20,
+                enablePlaceholders = false
+            ),
+            pagingSourceFactory = { ListStoryPagingSource(apiService) }
+        ).flow
     }
+
+//    suspend fun getListStory(): Result<ListStoryResponse> {
+//        return try {
+//            val response = apiService.getListStory()
+//            Result.Success(response)
+//        } catch (e: Exception) {
+//            Result.Error(e.message.toString())
+//        }
+//    }
 
     suspend fun getStoryDetail(id: String): Result<DetailStoryResponse> {
         return try {
