@@ -82,6 +82,7 @@ dependencies {
     ksp(libs.room.compiler)
     implementation (libs.androidx.room.ktx)
     implementation (libs.androidx.room.runtime)
+    implementation (libs.androidx.room.paging)
     testImplementation (libs.androidx.room.testing)
 
     // glide dependencies
