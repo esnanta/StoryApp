@@ -48,6 +48,7 @@
 
     <string name="error_email_empty">Email cannot be empty</string>
     <string name="error_invalid_email">Invalid email address</string>
+    <string name="retry">Retry</string>
 
     <string name="testing_email">andromeda@tiga.com</string>
     <string name="testing_password">12345678</string>

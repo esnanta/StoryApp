@@ -19,7 +19,8 @@ class ListStoryActivity : BaseActivity() {
     }
 
     private lateinit var binding: ActivityListStoryBinding
-    private lateinit var adapter: ListStoryAdapter
+    private lateinit var storyAdapter: ListStoryAdapter
+    private lateinit var loadStateAdapter: LoadingStateAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,26 +38,37 @@ class ListStoryActivity : BaseActivity() {
     }
 
     private fun setupRecyclerView() {
-        adapter = ListStoryAdapter()
+        storyAdapter = ListStoryAdapter()
+        loadStateAdapter = LoadingStateAdapter { storyAdapter.retry() }
+
+        val concatAdapter = storyAdapter.withLoadStateFooter(loadStateAdapter)
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
-        binding.recyclerView.adapter = adapter
+        binding.recyclerView.adapter = concatAdapter
     }
 
     private fun setupSwipeRefresh() {
         binding.swipeRefreshLayout.setOnRefreshListener {
-            adapter.refresh()
+            storyAdapter.refresh()
         }
     }
 
     private fun observeViewModel() {
-        // Observe the LiveData instead of using collectLatest
         viewModel.listStory.observe(this) { pagingData ->
-            adapter.submitData(lifecycle, pagingData)
+            storyAdapter.submitData(lifecycle, pagingData)
         }
 
         lifecycleScope.launch {
-            adapter.loadStateFlow.collectLatest { loadStates ->
+            storyAdapter.loadStateFlow.collectLatest { loadStates ->
                 binding.swipeRefreshLayout.isRefreshing = loadStates.refresh is LoadState.Loading
+
+                // Show retry button and error message on the screen when there's an error
+                val errorState = loadStates.source.append as? LoadState.Error
+                    ?: loadStates.source.prepend as? LoadState.Error
+                    ?: loadStates.append as? LoadState.Error
+                    ?: loadStates.prepend as? LoadState.Error
+                errorState?.let {
+                    Toast.makeText(this@ListStoryActivity, it.error.localizedMessage, Toast.LENGTH_LONG).show()
+                }
             }
         }
 
