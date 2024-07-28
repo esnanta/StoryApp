@@ -5,12 +5,14 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.esnanta.storyapp.BuildConfig
+import com.esnanta.storyapp.data.source.local.dao.ListStoryDao
 import com.esnanta.storyapp.data.source.local.dao.UserDao
 import com.esnanta.storyapp.data.source.local.entity.UserEntity
 
 @Database(entities = [UserEntity::class], version = BuildConfig.DATABASE_VERSION_CODE, exportSchema = false)
 abstract class StoryAppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
+    abstract fun listStoryDao(): ListStoryDao
 
     companion object {
         @Volatile
