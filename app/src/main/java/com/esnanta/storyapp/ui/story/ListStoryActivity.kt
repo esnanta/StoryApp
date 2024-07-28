@@ -35,6 +35,7 @@ class ListStoryActivity : BaseActivity() {
         setupRecyclerView()
         setupSwipeRefresh()
         observeViewModel()
+        observeLoadState()
     }
 
     private fun setupRecyclerView() {
@@ -48,7 +49,7 @@ class ListStoryActivity : BaseActivity() {
 
     private fun setupSwipeRefresh() {
         binding.swipeRefreshLayout.setOnRefreshListener {
-            storyAdapter.refresh()
+            viewModel.refreshStories(storyAdapter)
         }
     }
 
@@ -57,25 +58,22 @@ class ListStoryActivity : BaseActivity() {
             storyAdapter.submitData(lifecycle, pagingData)
         }
 
-        lifecycleScope.launch {
-            storyAdapter.loadStateFlow.collectLatest { loadStates ->
-                binding.swipeRefreshLayout.isRefreshing = loadStates.refresh is LoadState.Loading
-
-                // Show retry button and error message on the screen when there's an error
-                val errorState = loadStates.source.append as? LoadState.Error
-                    ?: loadStates.source.prepend as? LoadState.Error
-                    ?: loadStates.append as? LoadState.Error
-                    ?: loadStates.prepend as? LoadState.Error
-                errorState?.let {
-                    Toast.makeText(this@ListStoryActivity, it.error.localizedMessage, Toast.LENGTH_LONG).show()
-                }
-            }
+        viewModel.loadState.observe(this) { loadStates ->
+            binding.swipeRefreshLayout.isRefreshing = loadStates.refresh is LoadState.Loading
         }
 
         viewModel.dialogMessage.observe(this) { message ->
             message?.let {
-                Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, it, Toast.LENGTH_LONG).show()
                 viewModel.clearDialogMessage()
+            }
+        }
+    }
+
+    private fun observeLoadState() {
+        lifecycleScope.launch {
+            storyAdapter.loadStateFlow.collectLatest { loadStates ->
+                viewModel.observeLoadState(loadStates)
             }
         }
     }
