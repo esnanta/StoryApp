@@ -7,21 +7,23 @@ import androidx.room.RoomDatabase
 import com.esnanta.storyapp.BuildConfig
 import com.esnanta.storyapp.data.source.local.dao.ListStoryDao
 import com.esnanta.storyapp.data.source.local.dao.UserDao
+import com.esnanta.storyapp.data.source.local.entity.ListStoryEntity
 import com.esnanta.storyapp.data.source.local.entity.UserEntity
 
-@Database(entities = [UserEntity::class], version = BuildConfig.DATABASE_VERSION_CODE, exportSchema = false)
-abstract class StoryAppDatabase : RoomDatabase() {
+@Database(entities = [UserEntity::class, ListStoryEntity::class],
+    version = 1, exportSchema = false)
+abstract class StoryDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
     abstract fun listStoryDao(): ListStoryDao
 
     companion object {
         @Volatile
-        private var instance: StoryAppDatabase? = null
-        fun getInstance(context: Context): StoryAppDatabase =
+        private var instance: StoryDatabase? = null
+        fun getInstance(context: Context): StoryDatabase =
             instance ?: synchronized(this) {
                 instance ?: Room.databaseBuilder(
                     context.applicationContext,
-                    StoryAppDatabase::class.java, BuildConfig.DATABASE_NAME
+                    StoryDatabase::class.java, BuildConfig.DATABASE_NAME
                 ).build()
             }
     }

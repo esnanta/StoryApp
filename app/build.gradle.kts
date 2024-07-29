@@ -21,7 +21,6 @@ android {
         buildConfigField("String", "TOKEN_GITHUB", "\"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\"")
         buildConfigField("String", "BASE_URL_API", "\"https://story-api.dicoding.dev/v1/\"")
         buildConfigField("String", "DATABASE_NAME", "\"story_appx.db\"")
-        buildConfigField("int", "DATABASE_VERSION_CODE", "1")
     }
 
     buildTypes {
