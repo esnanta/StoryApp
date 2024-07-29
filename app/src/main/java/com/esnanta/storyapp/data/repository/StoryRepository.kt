@@ -1,10 +1,15 @@
 package com.esnanta.storyapp.data.repository
 
+import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import androidx.paging.map
+import com.esnanta.storyapp.data.ListStoryRemoteMediator
 import com.esnanta.storyapp.data.model.UserModel
+import com.esnanta.storyapp.data.source.local.StoryDatabase
 import com.esnanta.storyapp.data.source.local.UserPreference
+import com.esnanta.storyapp.data.source.local.entity.ListStoryEntity
 import com.esnanta.storyapp.data.source.remote.Result
 import com.esnanta.storyapp.data.source.remote.api.ApiService
 import com.esnanta.storyapp.data.source.remote.response.StoryResponse
@@ -13,6 +18,7 @@ import com.esnanta.storyapp.data.source.remote.response.ListStoryItem
 import com.esnanta.storyapp.ui.story.ListStoryPagingSource
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -21,6 +27,7 @@ import retrofit2.HttpException
 import java.io.File
 
 class StoryRepository private constructor(
+    private val storyDatabase : StoryDatabase,
     private val userPreference: UserPreference,
     private val apiService: ApiService
 ) : IRepository {
@@ -33,24 +40,23 @@ class StoryRepository private constructor(
         userPreference.logout()
     }
 
+    @OptIn(ExperimentalPagingApi::class)
     fun getListStory(): Flow<PagingData<ListStoryItem>> {
         return Pager(
             config = PagingConfig(
                 pageSize = 20,
                 enablePlaceholders = false
             ),
-            pagingSourceFactory = { ListStoryPagingSource(apiService) }
-        ).flow
+            remoteMediator = ListStoryRemoteMediator(storyDatabase,apiService),
+            pagingSourceFactory = {
+                storyDatabase.listStoryDao().getAllStories()
+            }
+        ).flow.map { pagingData->
+            pagingData.map { listStoryEntity->
+                listStoryEntity.toListStoryItem()
+            }
+        }
     }
-
-//    suspend fun getListStory(): Result<ListStoryResponse> {
-//        return try {
-//            val response = apiService.getListStory()
-//            Result.Success(response)
-//        } catch (e: Exception) {
-//            Result.Error(e.message.toString())
-//        }
-//    }
 
     suspend fun getStoryDetail(id: String): Result<DetailStoryResponse> {
         return try {
@@ -94,11 +100,25 @@ class StoryRepository private constructor(
         @Volatile
         private var instance: StoryRepository? = null
         fun getInstance(
+            storyDatabase: StoryDatabase,
             userPreference: UserPreference,
             apiService: ApiService
         ): StoryRepository =
             instance ?: synchronized(this) {
-                instance ?: StoryRepository(userPreference, apiService)
+                instance ?: StoryRepository(storyDatabase,userPreference, apiService)
             }.also { instance = it }
     }
+}
+
+// Extension function to convert ListStoryEntity to ListStoryItem
+fun ListStoryEntity.toListStoryItem(): ListStoryItem {
+    return ListStoryItem(
+        id = this.id,
+        photoUrl = this.photoUrl,
+        createdAt = this.createdAt,
+        name = this.name,
+        description = this.description,
+        lon = this.lon,
+        lat = this.lat
+    )
 }
