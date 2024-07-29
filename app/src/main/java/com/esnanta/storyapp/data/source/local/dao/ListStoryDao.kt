@@ -1,8 +1,8 @@
 package com.esnanta.storyapp.data.source.local.dao
 
-import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Query
+import androidx.paging.PagingSource
 import com.esnanta.storyapp.data.source.local.entity.ListStoryEntity
 
 @Dao
