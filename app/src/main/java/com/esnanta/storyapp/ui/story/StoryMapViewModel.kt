@@ -64,6 +64,7 @@ class StoryMapViewModel(private val repository: StoryRepository) : ViewModel() {
                     // If stories list is empty, move camera to the default location
                     Log.d("StoryMapActivity", "No stories found. Moving camera to default location.")
                     withContext(Dispatchers.Main) {
+                        googleMap.minZoomLevel
                         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLatLng, defaultZoomLevel))
                     }
                 } else {
