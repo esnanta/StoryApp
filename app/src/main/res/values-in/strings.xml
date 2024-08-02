@@ -21,6 +21,7 @@
     <string name="gallery">Galeri</string>
     <string name="upload">Unggah</string>
     <string name="upload_success">Gambar berhasil diunggah</string>
+    <string name="use_location">Gunakan lokasi</string>
     <string name="unknown_error">Error tidak diketahui</string>
     <string name="empty_image_warning">Silakan masukkan berkas gambar terlebih dahulu.</string>
     <string name="please_fill_all_fields">Mohon isi semua field.</string>

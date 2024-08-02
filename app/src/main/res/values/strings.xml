@@ -20,6 +20,7 @@
     <string name="gallery">Gallery</string>
     <string name="upload">Upload</string>
     <string name="upload_success">Image uploaded</string>
+    <string name="use_location">Use Location</string>
     <string name="unknown_error">Unknown error</string>
     <string name="empty_image_warning">Please select an image file first.</string>
     <string name="please_fill_all_fields">Please fill all fields.</string>

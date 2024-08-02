@@ -96,8 +96,19 @@
             android:layout_marginBottom="8dp"
             android:text="@string/upload"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/useLocation"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <CheckBox
+            android:id="@+id/useLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="@string/use_location"
+            app:layout_constraintBottom_toBottomOf="@+id/uploadButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/uploadButton"
+            app:layout_constraintStart_toEndOf="@+id/uploadButton" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
