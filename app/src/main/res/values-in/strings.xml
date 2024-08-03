@@ -22,6 +22,9 @@
     <string name="upload">Unggah</string>
     <string name="upload_success">Gambar berhasil diunggah</string>
     <string name="use_location">Gunakan lokasi</string>
+    <string name="location_not_available">Lokasi tidak tersedia</string>
+    <string name="failed_to_get_location">Gagal mendapatkan lokasi</string>
+
     <string name="unknown_error">Error tidak diketahui</string>
     <string name="empty_image_warning">Silakan masukkan berkas gambar terlebih dahulu.</string>
     <string name="please_fill_all_fields">Mohon isi semua field.</string>

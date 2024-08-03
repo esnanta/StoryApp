@@ -66,7 +66,7 @@ class StoryRepository private constructor(
         }
     }
 
-    suspend fun uploadImage(imageFile: File, description: String): Result<StoryResponse> {
+    suspend fun uploadImage(imageFile: File, description: String, latitude: Double? = null, longitude: Double? = null): Result<StoryResponse> {
         return try {
             val requestBody = description.toRequestBody("text/plain".toMediaType())
             val requestImageFile = imageFile.asRequestBody("image/jpeg".toMediaType())
@@ -75,7 +75,11 @@ class StoryRepository private constructor(
                 imageFile.name,
                 requestImageFile
             )
-            val successResponse = apiService.addStory(multipartBody, requestBody)
+
+            val lat = latitude?.toString()?.toRequestBody("text/plain".toMediaType())
+            val lon = longitude?.toString()?.toRequestBody("text/plain".toMediaType())
+
+            val successResponse = apiService.addStory(multipartBody, requestBody, lat, lon)
             Result.Success(successResponse)
         } catch (e: HttpException) {
             val errorBody = e.response()?.errorBody()?.string()

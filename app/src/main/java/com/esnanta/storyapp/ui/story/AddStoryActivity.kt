@@ -1,7 +1,10 @@
 package com.esnanta.storyapp.ui.story
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.Location
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -10,6 +13,7 @@ import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.core.content.ContextCompat
 import com.esnanta.storyapp.R
 import com.esnanta.storyapp.data.source.remote.Result
 import com.esnanta.storyapp.databinding.ActivityAddStoryBinding
@@ -18,6 +22,8 @@ import com.esnanta.storyapp.utils.factory.StoryViewModelFactory
 import com.esnanta.storyapp.utils.widgets.getImageUri
 import com.esnanta.storyapp.utils.widgets.reduceFileImage
 import com.esnanta.storyapp.utils.widgets.uriToFile
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 
 class AddStoryActivity : BaseActivity() {
 
@@ -26,18 +32,22 @@ class AddStoryActivity : BaseActivity() {
     }
 
     private lateinit var binding: ActivityAddStoryBinding
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var currentImageUri: Uri? = null
+    private var currentLocation: Location? = null
 
-    private val requestPermissionLauncher =
-        registerForActivityResult(
-            ActivityResultContracts.RequestPermission()
-        ) { isGranted: Boolean ->
-            if (isGranted) {
-                Toast.makeText(this, "Permission request granted", Toast.LENGTH_LONG).show()
-            } else {
-                Toast.makeText(this, "Permission request denied", Toast.LENGTH_LONG).show()
-            }
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        val fineLocationGranted = permissions[Manifest.permission.ACCESS_FINE_LOCATION] ?: false
+        val coarseLocationGranted = permissions[Manifest.permission.ACCESS_COARSE_LOCATION] ?: false
+
+        if (fineLocationGranted || coarseLocationGranted) {
+            getLastLocation()
+        } else {
+            showToast("Location permission denied")
         }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,16 +55,59 @@ class AddStoryActivity : BaseActivity() {
         setContentView(binding.root)
 
         setSupportActionBar(binding.toolbar)
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         binding.galleryButton.setOnClickListener { startGallery() }
         binding.cameraButton.setOnClickListener { startCamera() }
         binding.uploadButton.setOnClickListener { uploadImage() }
+        binding.useLocation.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                checkLocationPermission()
+            }
+        }
 
         observeViewModel()
     }
 
+    private fun checkLocationPermission() {
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            requestPermissionLauncher.launch(
+                arrayOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                )
+            )
+        } else {
+            getLastLocation()
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun getLastLocation() {
+        fusedLocationClient.lastLocation
+            .addOnSuccessListener { location: Location? ->
+                if (location != null) {
+                    currentLocation = location
+                } else {
+                    showToast(getString(R.string.location_not_available))
+                }
+            }
+            .addOnFailureListener { e ->
+                Log.e("Location Error", e.message ?: "Unknown error")
+                showToast(getString(R.string.failed_to_get_location))
+            }
+    }
+
     private fun startGallery() {
-        launcherGallery.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+        launcherGallery.launch(
+            PickVisualMediaRequest(
+                ActivityResultContracts.PickVisualMedia.ImageOnly
+            )
+        )
     }
 
     private val launcherGallery = registerForActivityResult(
@@ -97,7 +150,13 @@ class AddStoryActivity : BaseActivity() {
                 return
             }
 
-            viewModel.uploadImage(imageFile, description)
+            if (binding.useLocation.isChecked) {
+                currentLocation?.let { location ->
+                    viewModel.uploadImage(imageFile, description, location.latitude, location.longitude)
+                } ?: showToast("Location not available")
+            } else {
+                viewModel.uploadImage(imageFile, description, null, null)
+            }
         } ?: showToast(getString(R.string.empty_image_warning))
     }
 

@@ -23,13 +23,13 @@ class AddStoryViewModel(private val repository: StoryRepository) : ViewModel() {
     private val _dialogMessage = MutableLiveData<String?>()
     val dialogMessage: LiveData<String?> get() = _dialogMessage
 
-    fun uploadImage(file: File, description: String) {
+    fun uploadImage(file: File, description: String, latitude: Double? = null, longitude: Double? = null) {
         viewModelScope.launch {
             _isLoading.value = true
             _uploadResult.postValue(Result.Loading)
             try {
                 val result = withContext(Dispatchers.IO) {
-                    repository.uploadImage(file, description)
+                    repository.uploadImage(file, description, latitude, longitude)
                 }
                 _uploadResult.postValue(result)
                 if (result is Result.Success) {
