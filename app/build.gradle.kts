@@ -67,11 +67,6 @@ dependencies {
     implementation(libs.androidx.media3.common)
     implementation(libs.androidx.paging.runtime.ktx)
 
-    // testing dependencies
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-
     // liveData, viewModel, coroutines dependencies.
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.lifecycle.livedata.ktx)
@@ -100,4 +95,20 @@ dependencies {
 
     //desugaring
     coreLibraryDesugaring(libs.desugar.jdk.libs)
+
+    // testing dependencies
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
+
+    // For Android instrumented tests
+    androidTestImplementation (libs.androidx.core.testing)
+    androidTestImplementation (libs.kotlinx.coroutines.test)
+
+    // For local unit tests
+    testImplementation (libs.androidx.core.testing)
+    testImplementation (libs.kotlinx.coroutines.test)
+    testImplementation (libs.mockito.core)
+    testImplementation (libs.mockito.inline)
+
 }
