@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.esnanta.storyapp.data.repository.StoryRepository
 import com.esnanta.storyapp.di.Injection
+import com.esnanta.storyapp.ui.story.AddStoryViewModel
 import com.esnanta.storyapp.ui.story.ListStoryViewModel
 import com.esnanta.storyapp.ui.story.DetailStoryViewModel
 import com.esnanta.storyapp.ui.story.StoryMapViewModel
@@ -20,6 +21,9 @@ class StoryViewModelFactory(private val repository: StoryRepository) :
             }
             modelClass.isAssignableFrom(DetailStoryViewModel::class.java) -> {
                 DetailStoryViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(AddStoryViewModel::class.java) -> {
+                AddStoryViewModel(repository) as T
             }
             modelClass.isAssignableFrom(StoryMapViewModel::class.java) -> {
                 StoryMapViewModel(repository) as T
