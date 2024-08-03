@@ -33,6 +33,7 @@ android {
         }
     }
     compileOptions {
+        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
@@ -96,4 +97,7 @@ dependencies {
     // map dependencies
     implementation(libs.play.services.maps)
     implementation(libs.play.services.location)
+
+    //desugaring
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
 }

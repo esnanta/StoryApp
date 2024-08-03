@@ -3,6 +3,7 @@ activityKtx = "1.9.1"
 agp = "8.5.1"
 converterGson = "2.11.0"
 datastorePreferences = "1.1.1"
+desugar_jdk_libs = "2.0.4"
 fragment = "1.8.2"
 glide = "4.16.0"
 kotlin = "1.9.10"
@@ -46,6 +47,7 @@ androidx-room-paging = { module = "androidx.room:room-paging", version.ref = "ro
 androidx-room-runtime = { module = "androidx.room:room-runtime" }
 androidx-room-testing = { module = "androidx.room:room-testing" }
 androidx-swiperefreshlayout = { module = "androidx.swiperefreshlayout:swiperefreshlayout", version.ref = "swiperefreshlayoutVersion" }
+desugar_jdk_libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar_jdk_libs" }
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
 jetbrains-kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutinesCoreVersion" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
