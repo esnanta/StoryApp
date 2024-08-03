@@ -10,6 +10,8 @@ import com.bumptech.glide.Glide
 import com.esnanta.storyapp.R
 import com.esnanta.storyapp.data.source.remote.response.ListStoryItem
 import com.esnanta.storyapp.databinding.ItemStoryBinding
+import com.esnanta.storyapp.utils.widgets.DateFormatter
+import java.util.TimeZone
 
 class ListStoryAdapter :
     PagingDataAdapter<ListStoryItem, ListStoryAdapter.StoryViewHolder>(StoryDiffCallback()) {
@@ -34,7 +36,10 @@ class ListStoryAdapter :
         fun bind(story: ListStoryItem) {
             binding.tvName.text = story.name
             binding.tvDescription.text = story.description
-            binding.tvCreatedAt.text = story.createdAt
+            binding.tvCreatedAt.text =
+                DateFormatter.formatDate(
+                    story.createdAt.toString(), TimeZone.getDefault().id
+                )
 
             Glide.with(binding.root.context)
                 .load(story.photoUrl)
