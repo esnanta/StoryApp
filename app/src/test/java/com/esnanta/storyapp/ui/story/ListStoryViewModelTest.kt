@@ -50,7 +50,7 @@ class ListStoryViewModelTest {
         val actualStories: PagingData<ListStoryItem> = listStoryViewModel.listStory.getOrAwaitValue()
 
         val differ = AsyncPagingDataDiffer(
-            diffCallback = StoryDiffCallback(),
+            diffCallback = ListStoryAdapter.DIFF_CALLBACK,
             updateCallback = noopListUpdateCallback,
             workerDispatcher = Dispatchers.Main,
         )
@@ -72,7 +72,7 @@ class ListStoryViewModelTest {
         val actualStories: PagingData<ListStoryItem> = listStoryViewModel.listStory.getOrAwaitValue()
 
         val differ = AsyncPagingDataDiffer(
-            diffCallback = StoryDiffCallback(),
+            diffCallback = ListStoryAdapter.DIFF_CALLBACK,
             updateCallback = noopListUpdateCallback,
             workerDispatcher = Dispatchers.Main,
         )
