@@ -10,10 +10,10 @@ data class StoryResponse(
 	val message: String? = null,
 
 	@SerializedName("listStory")
-	val listStory: List<Story>? = null
+	val listStory: List<DetailStoryItem>? = null
 )
 
-data class Story(
+data class DetailStoryItem(
 	val photoUrl: String? = null,
 	val createdAt: String? = null,
 	val name: String? = null,

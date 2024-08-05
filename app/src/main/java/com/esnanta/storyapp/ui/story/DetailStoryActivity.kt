@@ -48,12 +48,12 @@ class DetailStoryActivity : BaseActivity() {
                     // Handled by isLoading LiveData
                 }
                 is Result.Success -> {
-                    val story = result.data.story
-                    binding.tvName.text = story?.name
-                    binding.tvDescription.text = story?.description
-                    binding.tvCreatedAt.text = story?.createdAt
+                    val detailStoryItem = result.data.detailStoryItem
+                    binding.tvName.text = detailStoryItem?.name
+                    binding.tvDescription.text = detailStoryItem?.description
+                    binding.tvCreatedAt.text = detailStoryItem?.createdAt
 
-                    story?.photoUrl?.let {
+                    detailStoryItem?.photoUrl?.let {
                         binding.ivPhoto.loadImage(
                             url = it
                         )

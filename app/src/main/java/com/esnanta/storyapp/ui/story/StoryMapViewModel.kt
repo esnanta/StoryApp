@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.esnanta.storyapp.data.repository.StoryRepository
 import com.esnanta.storyapp.data.source.remote.Result
-import com.esnanta.storyapp.data.source.remote.response.Story
+import com.esnanta.storyapp.data.source.remote.response.DetailStoryItem
 import com.esnanta.storyapp.data.source.remote.response.StoryResponse
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -55,12 +55,12 @@ class StoryMapViewModel(private val repository: StoryRepository) : ViewModel() {
         _dialogMessage.value = null
     }
 
-    fun addMarkers(stories: List<Story>?, googleMap: GoogleMap) {
+    fun addMarkers(detailStoryItem: List<DetailStoryItem>?, googleMap: GoogleMap) {
         val defaultLatLng = LatLng(-6.200000, 106.816666) // Jakarta, Indonesia
         val defaultZoomLevel = 10f
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                if (stories.isNullOrEmpty()) {
+                if (detailStoryItem.isNullOrEmpty()) {
                     // If stories list is empty, move camera to the default location
                     Log.d("StoryMapActivity", "No stories found. Moving camera to default location.")
                     withContext(Dispatchers.Main) {
@@ -69,8 +69,8 @@ class StoryMapViewModel(private val repository: StoryRepository) : ViewModel() {
                     }
                 } else {
                     // Add markers and move camera to the first story's location
-                    Log.d("StoryMapActivity", "Adding markers for ${stories.size} stories.")
-                    stories.forEach { story ->
+                    Log.d("StoryMapActivity", "Adding markers for ${detailStoryItem.size} detailStoryItem.")
+                    detailStoryItem.forEach { story ->
                         Log.d("StoryMapActivity", "Adding marker for story: $story")
                         val lat = story.lat
                         val lon = story.lon
@@ -87,7 +87,7 @@ class StoryMapViewModel(private val repository: StoryRepository) : ViewModel() {
                         }
                     }
                     // Move the camera to the first story's location
-                    stories.firstOrNull { it.lat != null && it.lon != null }?.let { story ->
+                    detailStoryItem.firstOrNull { it.lat != null && it.lon != null }?.let { story ->
                         val firstLocation = LatLng(story.lat!!, story.lon!!)
                         withContext(Dispatchers.Main) {
                             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(firstLocation, 10f))
