@@ -25,7 +25,7 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.HttpException
 import java.io.File
 
-class StoryRepository private constructor(
+open class StoryRepository private constructor(
     private val storyDatabase : StoryDatabase,
     private val userPreference: UserPreference,
     private val apiService: ApiService
