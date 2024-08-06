@@ -48,11 +48,12 @@ android {
         buildConfig = true
     }
 
-//    testOptions {
-//        unitTests.all {
-//            systemProperty("net.bytebuddy.experimental", "true")
-//        }
-//    }
+    testOptions {
+        unitTests.all {
+            systemProperty("net.bytebuddy.experimental", "true")
+        }
+        unitTests.isReturnDefaultValues = true
+    }
 }
 
 dependencies {
@@ -113,8 +114,8 @@ dependencies {
     androidTestImplementation (libs.kotlinx.coroutines.test)
     // For local unit tests
     testImplementation (libs.androidx.core.testing)
+    testImplementation (libs.androidx.paging.common)
     testImplementation (libs.kotlinx.coroutines.test)
     testImplementation (libs.mockito.core)
     testImplementation (libs.mockito.inline)
-
 }
