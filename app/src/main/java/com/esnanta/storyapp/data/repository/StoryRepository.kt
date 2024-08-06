@@ -25,22 +25,22 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.HttpException
 import java.io.File
 
-open class StoryRepository private constructor(
+open class StoryRepository protected constructor(
     private val storyDatabase : StoryDatabase,
     private val userPreference: UserPreference,
     private val apiService: ApiService
-) : IRepository {
+)  {
 
-    override fun getSession(): Flow<UserModel> {
+    open fun getSession(): Flow<UserModel> {
         return userPreference.getSession()
     }
 
-    override suspend fun logout() {
+    open suspend fun logout() {
         userPreference.logout()
     }
 
     @OptIn(ExperimentalPagingApi::class)
-    fun getListStory(): Flow<PagingData<ListStoryItem>> {
+    open fun getListStory(): Flow<PagingData<ListStoryItem>> {
         return Pager(
             config = PagingConfig(
                 pageSize = 20,
@@ -57,7 +57,7 @@ open class StoryRepository private constructor(
         }
     }
 
-    suspend fun getStoryDetail(id: String): Result<DetailStoryResponse> {
+    open suspend fun getStoryDetail(id: String): Result<DetailStoryResponse> {
         return try {
             val response = apiService.getStoryDetail(id)
             Result.Success(response)
@@ -66,7 +66,7 @@ open class StoryRepository private constructor(
         }
     }
 
-    suspend fun uploadImage(imageFile: File, description: String, latitude: Double? = null, longitude: Double? = null): Result<StoryResponse> {
+    open suspend fun uploadImage(imageFile: File, description: String, latitude: Double? = null, longitude: Double? = null): Result<StoryResponse> {
         return try {
             val requestBody = description.toRequestBody("text/plain".toMediaType())
             val requestImageFile = imageFile.asRequestBody("image/jpeg".toMediaType())
@@ -90,7 +90,7 @@ open class StoryRepository private constructor(
         }
     }
 
-    suspend fun getStoriesWithLocation(): Result<StoryResponse> {
+    open suspend fun getStoriesWithLocation(): Result<StoryResponse> {
         return try {
             val response = apiService.getStoriesWithLocation()
             Result.Success(response)
