@@ -7,8 +7,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.esnanta.storyapp.data.repository.StoryRepository
 import com.esnanta.storyapp.data.source.remote.Result
-import com.esnanta.storyapp.data.source.remote.response.DetailStoryItem
-import com.esnanta.storyapp.data.source.remote.response.StoryResponse
+import com.esnanta.storyapp.data.source.remote.response.ListStoryItem
+import com.esnanta.storyapp.data.source.remote.response.ListStoryResponse
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
@@ -19,8 +19,8 @@ import kotlinx.coroutines.withContext
 
 class StoryMapViewModel(private val repository: StoryRepository) : ViewModel() {
 
-    private val _storiesWithLocation = MutableLiveData<Result<StoryResponse>>()
-    val storiesWithLocation: LiveData<Result<StoryResponse>> get() = _storiesWithLocation
+    private val _storiesWithLocation = MutableLiveData<Result<ListStoryResponse>>()
+    val storiesWithLocation: LiveData<Result<ListStoryResponse>> get() = _storiesWithLocation
 
     private val _isLoading = MutableLiveData(false)
     val isLoading: LiveData<Boolean> = _isLoading
@@ -55,7 +55,7 @@ class StoryMapViewModel(private val repository: StoryRepository) : ViewModel() {
         _dialogMessage.value = null
     }
 
-    fun addMarkers(detailStoryItem: List<DetailStoryItem>?, googleMap: GoogleMap) {
+    fun addMarkers(detailStoryItem: List<ListStoryItem>?, googleMap: GoogleMap) {
         val defaultLatLng = LatLng(-6.200000, 106.816666) // Jakarta, Indonesia
         val defaultZoomLevel = 10f
         viewModelScope.launch {

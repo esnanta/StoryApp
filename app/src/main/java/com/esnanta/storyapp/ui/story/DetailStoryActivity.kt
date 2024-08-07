@@ -11,6 +11,8 @@ import com.esnanta.storyapp.data.source.remote.Result
 import com.esnanta.storyapp.databinding.ActivityDetailStoryBinding
 import com.esnanta.storyapp.ui.base.BaseActivity
 import com.esnanta.storyapp.utils.factory.StoryViewModelFactory
+import com.esnanta.storyapp.utils.widgets.DateFormatter
+import java.util.TimeZone
 
 class DetailStoryActivity : BaseActivity() {
     private val viewModel by viewModels<DetailStoryViewModel> {
@@ -48,10 +50,13 @@ class DetailStoryActivity : BaseActivity() {
                     // Handled by isLoading LiveData
                 }
                 is Result.Success -> {
-                    val detailStoryItem = result.data.detailStoryItem
+                    val detailStoryItem = result.data.story
                     binding.tvName.text = detailStoryItem?.name
                     binding.tvDescription.text = detailStoryItem?.description
-                    binding.tvCreatedAt.text = detailStoryItem?.createdAt
+                    binding.tvCreatedAt.text =
+                        DateFormatter.formatDate(
+                            detailStoryItem?.createdAt.toString(), TimeZone.getDefault().id
+                        )
 
                     detailStoryItem?.photoUrl?.let {
                         binding.ivPhoto.loadImage(

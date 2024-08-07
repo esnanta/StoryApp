@@ -11,10 +11,11 @@ import com.esnanta.storyapp.data.source.local.StoryDatabase
 import com.esnanta.storyapp.data.source.local.UserPreference
 import com.esnanta.storyapp.data.source.remote.Result
 import com.esnanta.storyapp.data.source.remote.api.ApiService
-import com.esnanta.storyapp.data.source.remote.response.DetailStoryItem
+import com.esnanta.storyapp.data.source.remote.response.ListStoryResponse
 import com.esnanta.storyapp.data.source.remote.response.DetailStoryResponse
 import com.esnanta.storyapp.data.source.remote.response.ListStoryItem
-import com.esnanta.storyapp.data.source.remote.response.StoryResponse
+import com.esnanta.storyapp.data.source.remote.response.AddStoryResponse
+import com.esnanta.storyapp.data.source.remote.response.Story
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import java.io.File
@@ -54,7 +55,7 @@ open class FakeStoryRepository(
                 DetailStoryResponse(
                     error = false,
                     message = "Success",
-                    detailStoryItem = DetailStoryItem(
+                    story = Story(
                         id = story.id,
                         photoUrl = story.photoUrl,
                         createdAt = story.createdAt,
@@ -72,11 +73,11 @@ open class FakeStoryRepository(
 
     override suspend fun uploadImage(
         imageFile: File, description: String, latitude: Double?, longitude: Double?
-    ): Result<StoryResponse> {
-        return Result.Success(StoryResponse(error = false, message = "Success"))
+    ): Result<AddStoryResponse> {
+        return Result.Success(AddStoryResponse(error = false, message = "Success"))
     }
 
-    override suspend fun getStoriesWithLocation(): Result<StoryResponse> {
-        return Result.Success(StoryResponse(error = false, message = "Success"))
+    override suspend fun getStoriesWithLocation(): Result<ListStoryResponse> {
+        return Result.Success(ListStoryResponse(error = false, message = "Success"))
     }
 }

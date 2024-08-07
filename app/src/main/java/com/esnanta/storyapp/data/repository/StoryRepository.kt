@@ -12,9 +12,10 @@ import com.esnanta.storyapp.data.source.local.UserPreference
 import com.esnanta.storyapp.data.source.local.entity.ListStoryEntity
 import com.esnanta.storyapp.data.source.remote.Result
 import com.esnanta.storyapp.data.source.remote.api.ApiService
-import com.esnanta.storyapp.data.source.remote.response.StoryResponse
+import com.esnanta.storyapp.data.source.remote.response.AddStoryResponse
 import com.esnanta.storyapp.data.source.remote.response.DetailStoryResponse
 import com.esnanta.storyapp.data.source.remote.response.ListStoryItem
+import com.esnanta.storyapp.data.source.remote.response.ListStoryResponse
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -30,7 +31,6 @@ open class StoryRepository protected constructor(
     private val userPreference: UserPreference,
     private val apiService: ApiService
 )  {
-
     open fun getSession(): Flow<UserModel> {
         return userPreference.getSession()
     }
@@ -66,7 +66,10 @@ open class StoryRepository protected constructor(
         }
     }
 
-    open suspend fun uploadImage(imageFile: File, description: String, latitude: Double? = null, longitude: Double? = null): Result<StoryResponse> {
+    open suspend fun uploadImage(imageFile: File, description: String,
+                                 latitude: Double? = null, longitude: Double? = null)
+    : Result<AddStoryResponse> {
+
         return try {
             val requestBody = description.toRequestBody("text/plain".toMediaType())
             val requestImageFile = imageFile.asRequestBody("image/jpeg".toMediaType())
@@ -83,14 +86,14 @@ open class StoryRepository protected constructor(
             Result.Success(successResponse)
         } catch (e: HttpException) {
             val errorBody = e.response()?.errorBody()?.string()
-            val errorResponse = Gson().fromJson(errorBody, StoryResponse::class.java)
+            val errorResponse = Gson().fromJson(errorBody, AddStoryResponse::class.java)
             Result.Error(errorResponse.message ?: "Unknown error")
         } catch (e: Exception) {
             Result.Error(e.message ?: "Unknown error")
         }
     }
 
-    open suspend fun getStoriesWithLocation(): Result<StoryResponse> {
+    open suspend fun getStoriesWithLocation(): Result<ListStoryResponse> {
         return try {
             val response = apiService.getStoriesWithLocation()
             Result.Success(response)

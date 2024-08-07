@@ -1,6 +1,6 @@
 package com.esnanta.storyapp.data.source.remote.api
 
-import com.esnanta.storyapp.data.source.remote.response.StoryResponse
+import com.esnanta.storyapp.data.source.remote.response.AddStoryResponse
 import com.esnanta.storyapp.data.source.remote.response.DetailStoryResponse
 import com.esnanta.storyapp.data.source.remote.response.ListStoryResponse
 import com.esnanta.storyapp.data.source.remote.response.LoginResponse
@@ -34,12 +34,14 @@ interface ApiService {
     ): LoginResponse
 
     @GET("stories")
-    suspend fun getListStory(): ListStoryResponse
-
-    @GET("stories")
     suspend fun getListStoryWithPage(
         @Query("page") page: Int = 1,
         @Query("size") size: Int = 20
+    ): ListStoryResponse
+
+    @GET("stories")
+    suspend fun getStoriesWithLocation(
+        @Query("location") location : Int = 1,
     ): ListStoryResponse
 
     @GET("stories/{id}")
@@ -52,11 +54,6 @@ interface ApiService {
         @Part("description") description: RequestBody,
         @Part("lat") lat: RequestBody?,
         @Part("lon") lon: RequestBody?
-    ): StoryResponse
-
-    @GET("stories")
-    suspend fun getStoriesWithLocation(
-        @Query("location") location : Int = 1,
-    ): StoryResponse
+    ): AddStoryResponse
 
 }
