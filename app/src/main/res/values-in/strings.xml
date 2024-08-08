@@ -25,6 +25,7 @@
     <string name="location_not_available">Lokasi tidak tersedia</string>
     <string name="failed_to_get_location">Gagal mendapatkan lokasi</string>
     <string name="please_enable_google_play_and_location_service">Beri izin penggunaan layanan Google Play dan Lokasi untuk melanjutkan</string>
+    <string name="location_permission_denied">Aktifkan izin menggunakan lokasi</string>
 
     <string name="unknown_error">Error tidak diketahui</string>
     <string name="empty_image_warning">Silakan masukkan berkas gambar terlebih dahulu.</string>

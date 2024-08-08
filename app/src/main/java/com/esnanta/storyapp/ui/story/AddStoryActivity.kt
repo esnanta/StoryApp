@@ -42,8 +42,8 @@ class AddStoryActivity : BaseActivity() {
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
     ) { permissions ->
-        val fineLocationGranted = permissions[Manifest.permission.ACCESS_FINE_LOCATION] ?: false
-        val coarseLocationGranted = permissions[Manifest.permission.ACCESS_COARSE_LOCATION] ?: false
+        val fineLocationGranted = permissions[PERMISSION_FINE_LOCATION] ?: false
+        val coarseLocationGranted = permissions[PERMISSION_COARSE_LOCATION] ?: false
 
         if (fineLocationGranted || coarseLocationGranted) {
             getLastLocation()
@@ -80,13 +80,13 @@ class AddStoryActivity : BaseActivity() {
     private fun checkLocationPermission() {
         if (ContextCompat.checkSelfPermission(
                 this,
-                Manifest.permission.ACCESS_FINE_LOCATION
+                PERMISSION_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             requestPermissionLauncher.launch(
                 arrayOf(
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
+                    PERMISSION_FINE_LOCATION,
+                    PERMISSION_COARSE_LOCATION
                 )
             )
         } else {
@@ -226,6 +226,7 @@ class AddStoryActivity : BaseActivity() {
     }
 
     companion object {
-        private const val REQUIRED_PERMISSION = Manifest.permission.CAMERA
+        private const val PERMISSION_FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION
+        private const val PERMISSION_COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION
     }
 }

@@ -1,5 +1,6 @@
 package com.esnanta.storyapp.ui.story
 
+import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
@@ -59,12 +60,12 @@ class StoryMapActivity : BaseActivity(), OnMapReadyCallback {
     private fun getMyLocation() {
         if (ContextCompat.checkSelfPermission(
                 this.applicationContext,
-                android.Manifest.permission.ACCESS_FINE_LOCATION
+                PERMISSION_FINE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED
         ) {
             mMap.isMyLocationEnabled = true
         } else {
-            requestPermissionLauncher.launch(android.Manifest.permission.ACCESS_FINE_LOCATION)
+            requestPermissionLauncher.launch(PERMISSION_FINE_LOCATION)
         }
     }
 
@@ -98,5 +99,9 @@ class StoryMapActivity : BaseActivity(), OnMapReadyCallback {
                 viewModel.clearDialogMessage()
             }
         }
+    }
+
+    companion object {
+        private const val PERMISSION_FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION
     }
 }
