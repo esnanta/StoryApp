@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.esnanta.storyapp.R
 import com.esnanta.storyapp.data.repository.UserRepository
 import com.esnanta.storyapp.data.model.UserModel
 import com.esnanta.storyapp.data.source.remote.Result
@@ -46,7 +47,7 @@ class LoginViewModel(private val repository: UserRepository) : ViewModel() {
                     }
                 }
             } catch (e: Exception) {
-                _dialogMessage.postValue("Failed to connect to the server. Please try again.")
+                _dialogMessage.postValue(R.string.failed_to_connect_to_server.toString())
             } finally {
                 _isLoading.value = false
             }
