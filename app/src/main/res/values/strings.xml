@@ -32,6 +32,7 @@
     <string name="login_success_message">You have successfully logged in. Excited to start learning?</string>
     <string name="login_success_positive_button">Continue</string>
     <string name="registration_success_message">"%1$s. Your account with name %2$s and email %3$s is ready. Let's login and start coding."</string>
+    <string name="failed_to_connect_to_server">Failed to connect to the server. Please try again.</string>
 
     <string name="desc_name">Enter your name</string>
     <string name="desc_email">Enter your email address</string>
