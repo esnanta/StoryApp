@@ -2,7 +2,6 @@ package com.esnanta.storyapp.ui.story
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
@@ -64,7 +63,7 @@ class ListStoryActivity : BaseActivity() {
 
         viewModel.dialogMessage.observe(this) { message ->
             message?.let {
-                Toast.makeText(this, it, Toast.LENGTH_LONG).show()
+                showToast(it)
                 viewModel.clearDialogMessage()
             }
         }

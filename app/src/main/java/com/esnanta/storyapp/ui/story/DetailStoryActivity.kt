@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.activity.viewModels
 import com.bumptech.glide.Glide
 import com.esnanta.storyapp.data.source.remote.Result
@@ -67,14 +66,14 @@ class DetailStoryActivity : BaseActivity() {
                 }
                 is Result.Error -> {
                     // Show error message
-                    Toast.makeText(this, result.error, Toast.LENGTH_SHORT).show()
+                    showToast(result.error)
                 }
             }
         }
 
         viewModel.dialogMessage.observe(this) { message ->
             message?.let {
-                Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+                showToast(it)
                 viewModel.clearDialogMessage()
             }
         }

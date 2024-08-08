@@ -33,16 +33,23 @@ class LoginViewModel(private val repository: UserRepository) : ViewModel() {
     fun login(email: String, password: String) {
         viewModelScope.launch {
             _isLoading.value = true
-            withContext(Dispatchers.IO) {
-                val result = repository.loginSession(email, password)
-                _loginResult.postValue(result)
-                if (result is Result.Success) {
-                    repository.getSession().collect { user ->
-                        _userSession.postValue(user)
+            try {
+                withContext(Dispatchers.IO) {
+                    val result = repository.loginSession(email, password)
+                    _loginResult.postValue(result)
+                    if (result is Result.Success) {
+                        repository.getSession().collect { user ->
+                            _userSession.postValue(user)
+                        }
+                    } else if (result is Result.Error) {
+                        _dialogMessage.postValue(result.error)
                     }
                 }
+            } catch (e: Exception) {
+                _dialogMessage.postValue("Failed to connect to the server. Please try again.")
+            } finally {
+                _isLoading.value = false
             }
-            _isLoading.value = false
         }
     }
 

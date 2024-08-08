@@ -2,12 +2,12 @@ package com.esnanta.storyapp.ui.login
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.app.AlertDialog
 import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
-import android.widget.Toast
 import androidx.activity.viewModels
 import com.esnanta.storyapp.R
 import com.esnanta.storyapp.data.source.remote.Result
@@ -60,7 +60,7 @@ class LoginActivity : BaseActivity() {
             if (email.isNotEmpty() && password.isNotEmpty()) {
                 viewModel.login(email, password)
             } else {
-                Toast.makeText(this, getString(R.string.please_fill_all_fields), Toast.LENGTH_SHORT).show()
+                showToast(getString(R.string.please_fill_all_fields))
             }
         }
     }
@@ -73,12 +73,12 @@ class LoginActivity : BaseActivity() {
                     if (loginResponse.error == false) {
                         showLoginSuccessDialog()
                     } else {
-                        Toast.makeText(this, loginResponse.message, Toast.LENGTH_SHORT).show()
+                        showToast(loginResponse.message.toString())
                     }
                 }
                 is Result.Error -> {
                     val errorMessage = result.error
-                    Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
+                    showToast(errorMessage)
                 }
                 Result.Loading -> {
                     // Handle loading state if needed
@@ -88,6 +88,12 @@ class LoginActivity : BaseActivity() {
 
         viewModel.isLoading.observe(this) { isLoading ->
             binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+        }
+
+        viewModel.dialogMessage.observe(this) { message ->
+            message?.let {
+                showAlertDialog(it)
+            }
         }
     }
 
@@ -118,5 +124,13 @@ class LoginActivity : BaseActivity() {
             )
             startDelay = 100
         }.start()
+    }
+
+    private fun showAlertDialog(message: String) {
+        AlertDialog.Builder(this)
+            .setTitle("Error")
+            .setMessage(message)
+            .setPositiveButton(android.R.string.ok, null)
+            .show()
     }
 }

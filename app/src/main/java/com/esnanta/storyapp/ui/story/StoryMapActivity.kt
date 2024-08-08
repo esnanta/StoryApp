@@ -4,10 +4,8 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import com.esnanta.storyapp.R
 import com.esnanta.storyapp.data.source.remote.Result
@@ -85,7 +83,7 @@ class StoryMapActivity : BaseActivity(), OnMapReadyCallback {
                 }
                 is Result.Error -> {
                     Log.e("StoryMapActivity", "Error loading stories: ${result.error}")
-                    Toast.makeText(this, result.error, Toast.LENGTH_SHORT).show()
+                    showToast(result.error)
                 }
             }
         }
@@ -96,16 +94,9 @@ class StoryMapActivity : BaseActivity(), OnMapReadyCallback {
 
         viewModel.dialogMessage.observe(this) { message ->
             message?.let {
-                showDialog(message)
+                showToast(message)
                 viewModel.clearDialogMessage()
             }
         }
-    }
-
-    private fun showDialog(message: String) {
-        AlertDialog.Builder(this)
-            .setMessage(message)
-            .setPositiveButton(android.R.string.ok, null)
-            .show()
     }
 }

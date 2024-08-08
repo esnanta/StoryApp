@@ -9,7 +9,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -153,7 +152,7 @@ class AddStoryActivity : BaseActivity() {
             if (binding.useLocation.isChecked) {
                 currentLocation?.let { location ->
                     viewModel.uploadImage(imageFile, description, location.latitude, location.longitude)
-                } ?: showToast("Location not available")
+                } ?: showToast(getString(R.string.location_not_available))
             } else {
                 viewModel.uploadImage(imageFile, description, null, null)
             }
@@ -192,10 +191,6 @@ class AddStoryActivity : BaseActivity() {
                 viewModel.clearDialogMessage()
             }
         }
-    }
-
-    private fun showToast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
     private fun navigateToListStory() {
