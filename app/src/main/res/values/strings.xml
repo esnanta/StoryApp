@@ -23,6 +23,7 @@
     <string name="use_location">Use Location</string>
     <string name="location_not_available">Location not available</string>
     <string name="failed_to_get_location">Failed to get location</string>
+    <string name="please_enable_google_play_and_location_service">Please enable Google Play services and location services</string>
 
     <string name="unknown_error">Unknown error</string>
     <string name="empty_image_warning">Please select an image file first.</string>

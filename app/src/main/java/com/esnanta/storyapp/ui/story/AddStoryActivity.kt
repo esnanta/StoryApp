@@ -2,9 +2,11 @@ package com.esnanta.storyapp.ui.story
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
+import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -21,6 +23,8 @@ import com.esnanta.storyapp.utils.factory.StoryViewModelFactory
 import com.esnanta.storyapp.utils.widgets.getImageUri
 import com.esnanta.storyapp.utils.widgets.reduceFileImage
 import com.esnanta.storyapp.utils.widgets.uriToFile
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 
@@ -61,7 +65,12 @@ class AddStoryActivity : BaseActivity() {
         binding.uploadButton.setOnClickListener { uploadImage() }
         binding.useLocation.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                checkLocationPermission()
+                if (checkGooglePlayServices() && checkLocationServices()) {
+                    checkLocationPermission()
+                } else {
+                    showToast(getString(R.string.please_enable_google_play_and_location_service))
+                    binding.useLocation.isChecked = false
+                }
             }
         }
 
@@ -85,20 +94,36 @@ class AddStoryActivity : BaseActivity() {
         }
     }
 
+    private fun checkGooglePlayServices(): Boolean {
+        val apiAvailability = GoogleApiAvailability.getInstance()
+        val resultCode = apiAvailability.isGooglePlayServicesAvailable(this)
+        return resultCode == ConnectionResult.SUCCESS
+    }
+
+    private fun checkLocationServices(): Boolean {
+        val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
+                locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
+    }
+
     @SuppressLint("MissingPermission")
     private fun getLastLocation() {
-        fusedLocationClient.lastLocation
-            .addOnSuccessListener { location: Location? ->
-                if (location != null) {
-                    currentLocation = location
-                } else {
-                    showToast(getString(R.string.location_not_available))
+        if (checkLocationServices()) {
+            fusedLocationClient.lastLocation
+                .addOnSuccessListener { location: Location? ->
+                    if (location != null) {
+                        currentLocation = location
+                    } else {
+                        showToast(getString(R.string.location_not_available))
+                    }
                 }
-            }
-            .addOnFailureListener { e ->
-                Log.e("Location Error", e.message ?: "Unknown error")
-                showToast(getString(R.string.failed_to_get_location))
-            }
+                .addOnFailureListener { e ->
+                    Log.e("Location Error", e.message ?: "Unknown error")
+                    showToast(getString(R.string.failed_to_get_location))
+                }
+        } else {
+            showToast(getString(R.string.please_enable_google_play_and_location_service))
+        }
     }
 
     private fun startGallery() {
