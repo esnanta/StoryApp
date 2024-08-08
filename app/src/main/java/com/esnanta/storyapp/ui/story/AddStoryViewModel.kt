@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.esnanta.storyapp.R
 import com.esnanta.storyapp.data.repository.StoryRepository
 import com.esnanta.storyapp.data.source.remote.Result
 import com.esnanta.storyapp.data.source.remote.response.AddStoryResponse
@@ -38,8 +39,8 @@ class AddStoryViewModel(private val repository: StoryRepository) : ViewModel() {
                     _dialogMessage.postValue(result.error)
                 }
             } catch (e: Exception) {
-                _uploadResult.postValue(Result.Error(e.message ?: "Unknown error"))
-                _dialogMessage.postValue(e.message ?: "Unknown error")
+                _uploadResult.postValue(Result.Error(e.message ?: R.string.unknown_error.toString()))
+                _dialogMessage.postValue(e.message ?: R.string.unknown_error.toString())
             } finally {
                 _isLoading.postValue(false)
             }

@@ -48,7 +48,7 @@ class AddStoryActivity : BaseActivity() {
         if (fineLocationGranted || coarseLocationGranted) {
             getLastLocation()
         } else {
-            showToast("Location permission denied")
+            showToast(getString(R.string.location_permission_denied))
         }
     }
 
