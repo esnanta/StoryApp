@@ -12,7 +12,7 @@ import androidx.paging.cachedIn
 import com.esnanta.storyapp.data.repository.StoryRepository
 import com.esnanta.storyapp.data.source.remote.response.ListStoryItem
 
-class ListStoryViewModel(private val repository: StoryRepository) : ViewModel() {
+class ListStoryViewModel(repository: StoryRepository) : ViewModel() {
 
     val listStory: LiveData<PagingData<ListStoryItem>> = repository.getListStory().cachedIn(viewModelScope).asLiveData()
 

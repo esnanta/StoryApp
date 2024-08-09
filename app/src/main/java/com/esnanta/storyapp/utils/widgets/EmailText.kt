@@ -14,10 +14,6 @@ class EmailText @JvmOverloads constructor(
 
     private lateinit var editText: TextInputEditText
 
-    init {
-        // Initialization can go here if needed
-    }
-
     override fun onFinishInflate() {
         super.onFinishInflate()
         editText = findViewById(R.id.emailEditText)

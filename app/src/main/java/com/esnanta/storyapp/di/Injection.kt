@@ -1,7 +1,6 @@
 package com.esnanta.storyapp.di
 
 import android.content.Context
-import com.esnanta.storyapp.data.repository.IRepository
 import com.esnanta.storyapp.data.repository.StoryRepository
 import com.esnanta.storyapp.data.repository.UserRepository
 import com.esnanta.storyapp.data.source.local.StoryDatabase

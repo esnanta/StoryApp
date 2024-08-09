@@ -2,12 +2,9 @@ package com.esnanta.storyapp.utils.widgets
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.AttributeSet
-import android.view.MotionEvent
-import androidx.core.content.ContextCompat
 import com.esnanta.storyapp.R
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout

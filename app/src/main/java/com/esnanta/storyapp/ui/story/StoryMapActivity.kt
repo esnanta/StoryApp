@@ -83,7 +83,7 @@ class StoryMapActivity : BaseActivity(), OnMapReadyCallback {
                 }
                 is Result.Success -> {
                     Log.d("StoryMapActivity", "Successfully loaded stories with location.")
-                    result.data?.let {
+                    result.data.let {
                         viewModel.addMarkers(it.listStory, mMap)
                     }
                 }

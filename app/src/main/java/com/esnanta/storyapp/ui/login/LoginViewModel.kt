@@ -16,7 +16,6 @@ import kotlinx.coroutines.withContext
 class LoginViewModel(private val repository: UserRepository) : ViewModel() {
 
     private val _userSession = MutableLiveData<UserModel>()
-    val userSession: LiveData<UserModel> get() = _userSession
 
     private val _loginResult = MutableLiveData<Result<LoginResponse>>()
     val loginResult: LiveData<Result<LoginResponse>> get() = _loginResult
@@ -54,14 +53,6 @@ class LoginViewModel(private val repository: UserRepository) : ViewModel() {
         }
     }
 
-    fun saveSession(user: UserModel) {
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                repository.saveSession(user)
-            }
-        }
-    }
-
     private fun getSession() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
@@ -70,9 +61,5 @@ class LoginViewModel(private val repository: UserRepository) : ViewModel() {
                 }
             }
         }
-    }
-
-    fun getCurrentUser(): UserModel? {
-        return _userSession.value
     }
 }

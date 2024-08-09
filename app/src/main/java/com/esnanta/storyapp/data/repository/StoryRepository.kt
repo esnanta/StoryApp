@@ -6,7 +6,6 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
 import com.esnanta.storyapp.data.ListStoryRemoteMediator
-import com.esnanta.storyapp.data.model.UserModel
 import com.esnanta.storyapp.data.source.local.StoryDatabase
 import com.esnanta.storyapp.data.source.local.UserPreference
 import com.esnanta.storyapp.data.source.local.entity.ListStoryEntity
@@ -31,9 +30,6 @@ open class StoryRepository protected constructor(
     private val userPreference: UserPreference,
     private val apiService: ApiService
 )  {
-    open fun getSession(): Flow<UserModel> {
-        return userPreference.getSession()
-    }
 
     open suspend fun logout() {
         userPreference.logout()

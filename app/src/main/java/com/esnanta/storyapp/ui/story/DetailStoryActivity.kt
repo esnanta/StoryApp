@@ -79,7 +79,7 @@ class DetailStoryActivity : BaseActivity() {
         }
     }
 
-    fun ImageView.loadImage(url: String) {
+    private fun ImageView.loadImage(url: String) {
         Glide.with(this.context)
             .load(url)
             .centerCrop()
