@@ -52,6 +52,11 @@ class StoryMapActivity : BaseActivity(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
+        mMap.uiSettings.isZoomControlsEnabled = true
+        mMap.uiSettings.isIndoorLevelPickerEnabled = true
+        mMap.uiSettings.isCompassEnabled = true
+        mMap.uiSettings.isMapToolbarEnabled = true
+
         // Load map data asynchronously
         viewModel.fetchStoriesWithLocation()
         getMyLocation()
