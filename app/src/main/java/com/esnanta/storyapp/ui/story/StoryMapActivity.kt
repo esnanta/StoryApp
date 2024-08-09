@@ -42,7 +42,6 @@ class StoryMapActivity : BaseActivity(), OnMapReadyCallback {
 
         setSupportActionBar(binding.toolbar)
 
-        setupObserver()
 
         // Load the map asynchronously
         val mapFragment = supportFragmentManager
@@ -57,9 +56,10 @@ class StoryMapActivity : BaseActivity(), OnMapReadyCallback {
         mMap.uiSettings.isCompassEnabled = true
         mMap.uiSettings.isMapToolbarEnabled = true
 
+        getMyLocation()
+        setupObserver()
         // Load map data asynchronously
         viewModel.fetchStoriesWithLocation()
-        getMyLocation()
     }
 
     private fun getMyLocation() {
