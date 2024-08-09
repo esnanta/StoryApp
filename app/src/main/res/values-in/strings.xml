@@ -57,6 +57,7 @@
     <string name="error_email_empty">Email tidak boleh kosong</string>
     <string name="error_invalid_email">Penulisan email salah</string>
     <string name="retry">Coba lagi</string>
+    <string name="error">Ada kesalahan</string>
 
     <string name="testing_email">andromeda@tiga.com</string>
     <string name="testing_password">12345678</string>
