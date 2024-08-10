@@ -62,27 +62,32 @@ class StoryMapViewModel(private val repository: StoryRepository) : ViewModel() {
 
     fun addMarkers(detailStoryItem: List<ListStoryItem>?, googleMap: GoogleMap) {
         viewModelScope.launch(Dispatchers.Default) {
-            val defaultLatLng = LatLng(-6.200000, 106.816666) // Jakarta, Indonesia
-            val defaultZoomLevel = 10f
-
-            withContext(Dispatchers.Main) {
-                if (detailStoryItem.isNullOrEmpty()) {
+            if (detailStoryItem.isNullOrEmpty()) {
+                withContext(Dispatchers.Main) {
+                    val defaultLatLng = LatLng(-6.200000, 106.816666) // Jakarta, Indonesia
+                    val defaultZoomLevel = 10f
                     googleMap.minZoomLevel
                     googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLatLng, defaultZoomLevel))
-                } else {
-                    detailStoryItem.forEach { story ->
-                        val lat = story.lat
-                        val lon = story.lon
-                        if (lat != null && lon != null) {
-                            val latLng = LatLng(lat, lon)
-                            googleMap.addMarker(
-                                MarkerOptions()
-                                    .position(latLng)
-                                    .title(story.name)
-                                    .snippet(story.description)
-                            )
-                        }
+                }
+            } else {
+                val markers = detailStoryItem.mapNotNull { story ->
+                    val lat = story.lat
+                    val lon = story.lon
+                    if (lat != null && lon != null) {
+                        MarkerOptions()
+                            .position(LatLng(lat, lon))
+                            .title(story.name)
+                            .snippet(story.description)
+                    } else {
+                        null
                     }
+                }
+
+                withContext(Dispatchers.Main) {
+                    markers.forEach { markerOptions ->
+                        googleMap.addMarker(markerOptions)
+                    }
+
                     detailStoryItem.firstOrNull { it.lat != null && it.lon != null }?.let { story ->
                         val firstLocation = LatLng(story.lat!!, story.lon!!)
                         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(firstLocation, 10f))
