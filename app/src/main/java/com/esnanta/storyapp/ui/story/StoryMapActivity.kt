@@ -1,7 +1,9 @@
 package com.esnanta.storyapp.ui.story
 
 import android.Manifest
+import android.content.ContentValues.TAG
 import android.content.pm.PackageManager
+import android.content.res.Resources
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -16,6 +18,7 @@ import com.esnanta.storyapp.utils.factory.StoryViewModelFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.MapStyleOptions
 
 class StoryMapActivity : BaseActivity(), OnMapReadyCallback {
 
@@ -55,6 +58,7 @@ class StoryMapActivity : BaseActivity(), OnMapReadyCallback {
         mMap.uiSettings.isMapToolbarEnabled = true
 
         getMyLocation()
+        setMapStyle()
         setupObserver()
         // Load map data asynchronously
         viewModel.fetchStoriesWithLocation()
@@ -101,6 +105,18 @@ class StoryMapActivity : BaseActivity(), OnMapReadyCallback {
                 showToast(message)
                 viewModel.clearDialogMessage()
             }
+        }
+    }
+
+    private fun setMapStyle() {
+        try {
+            val success =
+                mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.map_style))
+            if (!success) {
+                Log.e(TAG, "Style parsing failed.")
+            }
+        } catch (exception: Resources.NotFoundException) {
+            Log.e(TAG, "Can't find style. Error: ", exception)
         }
     }
 
