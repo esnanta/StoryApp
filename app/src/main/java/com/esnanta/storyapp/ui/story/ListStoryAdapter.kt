@@ -7,11 +7,11 @@ import android.view.animation.AnimationUtils
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.esnanta.storyapp.R
 import com.esnanta.storyapp.data.source.remote.response.ListStoryItem
 import com.esnanta.storyapp.databinding.ItemStoryBinding
 import com.esnanta.storyapp.utils.widgets.DateFormatter
+import com.esnanta.storyapp.utils.widgets.loadImage
 import java.util.TimeZone
 
 class ListStoryAdapter :
@@ -42,9 +42,7 @@ class ListStoryAdapter :
                     story.createdAt.toString(), TimeZone.getDefault().id
                 )
 
-            Glide.with(binding.root.context)
-                .load(story.photoUrl)
-                .into(binding.ivPhoto)
+            binding.ivPhoto.loadImage(story.photoUrl.toString())
 
             binding.root.setOnClickListener {
                 val context = binding.root.context

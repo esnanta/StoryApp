@@ -8,7 +8,7 @@ import androidx.paging.map
 import com.esnanta.storyapp.data.ListStoryRemoteMediator
 import com.esnanta.storyapp.data.source.local.StoryDatabase
 import com.esnanta.storyapp.data.source.local.UserPreference
-import com.esnanta.storyapp.data.source.local.entity.ListStoryEntity
+import com.esnanta.storyapp.utils.widgets.toListStoryItem
 import com.esnanta.storyapp.data.source.remote.Result
 import com.esnanta.storyapp.data.source.remote.api.ApiService
 import com.esnanta.storyapp.data.source.remote.response.AddStoryResponse
@@ -110,17 +110,4 @@ open class StoryRepository protected constructor(
                 instance ?: StoryRepository(storyDatabase,userPreference, apiService)
             }.also { instance = it }
     }
-}
-
-// Extension function to convert ListStoryEntity to ListStoryItem
-fun ListStoryEntity.toListStoryItem(): ListStoryItem {
-    return ListStoryItem(
-        id = this.id,
-        photoUrl = this.photoUrl,
-        createdAt = this.createdAt,
-        name = this.name,
-        description = this.description,
-        lon = this.lon,
-        lat = this.lat
-    )
 }

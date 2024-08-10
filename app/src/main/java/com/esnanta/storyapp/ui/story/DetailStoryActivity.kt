@@ -3,14 +3,13 @@ package com.esnanta.storyapp.ui.story
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.ImageView
 import androidx.activity.viewModels
-import com.bumptech.glide.Glide
 import com.esnanta.storyapp.data.source.remote.Result
 import com.esnanta.storyapp.databinding.ActivityDetailStoryBinding
 import com.esnanta.storyapp.ui.base.BaseActivity
 import com.esnanta.storyapp.utils.factory.StoryViewModelFactory
 import com.esnanta.storyapp.utils.widgets.DateFormatter
+import com.esnanta.storyapp.utils.widgets.loadImage
 import java.util.TimeZone
 
 class DetailStoryActivity : BaseActivity() {
@@ -77,13 +76,6 @@ class DetailStoryActivity : BaseActivity() {
                 viewModel.clearDialogMessage()
             }
         }
-    }
-
-    private fun ImageView.loadImage(url: String) {
-        Glide.with(this.context)
-            .load(url)
-            .centerCrop()
-            .into(this)
     }
 
     companion object {
