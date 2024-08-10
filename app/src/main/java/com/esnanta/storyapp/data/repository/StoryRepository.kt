@@ -39,7 +39,7 @@ open class StoryRepository protected constructor(
     open fun getListStory(): Flow<PagingData<ListStoryItem>> {
         return Pager(
             config = PagingConfig(
-                pageSize = 20,
+                pageSize = 10,
                 enablePlaceholders = false
             ),
             remoteMediator = ListStoryRemoteMediator(storyDatabase,apiService),

@@ -36,12 +36,10 @@ class StoryMapActivity : BaseActivity(), OnMapReadyCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityStoryMapBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         setSupportActionBar(binding.toolbar)
-
 
         // Load the map asynchronously
         val mapFragment = supportFragmentManager

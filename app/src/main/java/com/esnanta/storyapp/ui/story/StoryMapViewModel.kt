@@ -61,37 +61,34 @@ class StoryMapViewModel(private val repository: StoryRepository) : ViewModel() {
     }
 
     fun addMarkers(detailStoryItem: List<ListStoryItem>?, googleMap: GoogleMap) {
-        val defaultLatLng = LatLng(-6.200000, 106.816666) // Jakarta, Indonesia
-        val defaultZoomLevel = 10f
+        viewModelScope.launch(Dispatchers.Default) {
+            val defaultLatLng = LatLng(-6.200000, 106.816666) // Jakarta, Indonesia
+            val defaultZoomLevel = 10f
 
-        if (detailStoryItem.isNullOrEmpty()) {
-            // If stories list is empty, move camera to the default location
-            Log.d("StoryMapActivity", "No stories found. Moving camera to default location.")
-            googleMap.minZoomLevel
-            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLatLng, defaultZoomLevel))
-        } else {
-            // Add markers and move camera to the first story's location
-            Log.d("StoryMapActivity", "Adding markers for ${detailStoryItem.size} detailStoryItem.")
-            detailStoryItem.forEach { story ->
-                Log.d("StoryMapActivity", "Adding marker for story: $story")
-                val lat = story.lat
-                val lon = story.lon
-                if (lat != null && lon != null) {
-                    val latLng = LatLng(lat, lon)
-                    googleMap.addMarker(
-                        MarkerOptions()
-                            .position(latLng)
-                            .title(story.name)
-                            .snippet(story.description)
-                    )
+            withContext(Dispatchers.Main) {
+                if (detailStoryItem.isNullOrEmpty()) {
+                    googleMap.minZoomLevel
+                    googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLatLng, defaultZoomLevel))
+                } else {
+                    detailStoryItem.forEach { story ->
+                        val lat = story.lat
+                        val lon = story.lon
+                        if (lat != null && lon != null) {
+                            val latLng = LatLng(lat, lon)
+                            googleMap.addMarker(
+                                MarkerOptions()
+                                    .position(latLng)
+                                    .title(story.name)
+                                    .snippet(story.description)
+                            )
+                        }
+                    }
+                    detailStoryItem.firstOrNull { it.lat != null && it.lon != null }?.let { story ->
+                        val firstLocation = LatLng(story.lat!!, story.lon!!)
+                        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(firstLocation, 10f))
+                    }
                 }
             }
-            // Move the camera to the first story's location
-            detailStoryItem.firstOrNull { it.lat != null && it.lon != null }?.let { story ->
-                val firstLocation = LatLng(story.lat!!, story.lon!!)
-                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(firstLocation, 10f))
-            }
         }
-
     }
 }
