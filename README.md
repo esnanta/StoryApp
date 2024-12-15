@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This repository contains the source code for an Android application developed as part of the Dicoding **Fundamental Android Training** program. The project demonstrates the implementation of essential Android development concepts, providing a solid foundation for building more advanced applications.
+This repository contains the source code for an Android application developed as part of the Dicoding **Intermediete Android Training** program. The project demonstrates the implementation of essential Android development concepts, providing a solid foundation for building more advanced applications.
 
 ## Key Features
 
